@@ -1,0 +1,28 @@
+{
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript",
+    "eslint:recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "parserOptions": {
+        "project": ["./tsconfig.json"],
+        "projectService": true,
+        "tsconfigRootDir": "_dirname"
+      },
+      "extends": [
+        "next/core-web-vitals",
+        "next/typescript",
+        "eslint:recommended",
+        "prettier",
+        // "plugin:@typescript-eslint/recommended-type-checked",
+        "plugin:@typescript-eslint/recommended"
+      ]
+    }
+  ]
+}
