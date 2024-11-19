@@ -4,47 +4,80 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { getCsrfToken, signIn } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { signIn } from 'next-auth/react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z, ZodType } from 'zod';
+
+type TLoginForm = {
+  email: string;
+  password: string;
+};
+const schema: ZodType<TLoginForm> = z.object({
+  email: z.string().email('Invalid email'),
+  password: z.string().min(8, 'Password must be at least 8 characters long'),
+});
 
 export default function LoginForm() {
-  const [csrfToken, setCsrfToken] = useState<string | undefined>(undefined);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TLoginForm>({ resolver: zodResolver(schema) });
 
-  useEffect(() => {
-    const fetchCsrfToken = async () => {
-      const token = await getCsrfToken();
-      setCsrfToken(token);
-    };
-    fetchCsrfToken();
-  }, []);
+  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget as HTMLFormElement);
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
-
-    await signIn('credentials', {
-      email,
-      password,
-    });
+  const handleFormSubmit = async (data: TLoginForm) => {
+    try {
+      const res = await signIn('credentials', {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+      if (res?.status === 200) {
+        router.push(callbackUrl);
+      }
+      if (res?.status === 401) {
+        setSubmitError(res?.error || 'Login failed. Please try again.');
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className='grid w-64 gap-4 md:w-96'>
-      <input name='csrfToken' type='hidden' defaultValue={csrfToken} />
+    <form
+      onSubmit={handleSubmit(handleFormSubmit)}
+      className='grid w-64 gap-4 md:w-96'
+    >
       <div className='grid gap-1'>
         <Label>E-mail</Label>
-        <Input name='email' type='email' placeholder='e-mail' required />
+        <Input
+          id='email'
+          type='text'
+          placeholder='e-mail'
+          {...register('email')}
+        />
+        {errors.email && (
+          <p className='text-sm text-red-600'>{errors.email.message}</p>
+        )}
       </div>
       <div className='grid gap-1'>
         <Label>Password</Label>
         <Input
-          name='password'
+          id='password'
           placeholder='password'
           type='password'
-          required
+          {...register('password')}
         />
+        {errors.password && (
+          <p className='text-sm text-red-600'>{errors.password.message}</p>
+        )}
         <div className='flex items-center justify-between'>
           <div className='flex items-center space-x-2'>
             <Checkbox id='remember' />
@@ -65,6 +98,9 @@ export default function LoginForm() {
       >
         LOG IN
       </Button>
+      {submitError && (
+        <p className='text-center text-sm text-red-600'>{submitError}</p>
+      )}
     </form>
   );
 }
