@@ -4,5 +4,9 @@
   "editor.codeActionsOnSave": {
     "source.organizeImports": "always",
     "source.addMissingImports": "always"
-  }
+  },
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "@radix-ui",
+    "postcss"
+  ]
 }
