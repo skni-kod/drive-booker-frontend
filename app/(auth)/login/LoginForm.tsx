@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z, ZodType } from 'zod';
 
+
 type TLoginForm = {
   email: string;
   password: string;
@@ -47,6 +48,15 @@ export default function LoginForm() {
       }
     } catch (error) {
       console.log(error);
+    }
+  };
+
+
+  const googleSignIn = async () => {
+    try {
+      await signIn('google');
+    } catch (error) {
+      console.error('Google sign-in failed:', error);
     }
   };
 
@@ -101,6 +111,12 @@ export default function LoginForm() {
       {submitError && (
         <p className='text-center text-sm text-red-600'>{submitError}</p>
       )}
+      <Button
+        className=''
+        onClick={googleSignIn}
+      >
+        Sign in with google!
+      </Button>
     </form>
   );
 }

@@ -2,12 +2,21 @@ import { ApiRoutes } from '@/enums/routes.enums';
 import axiosInstance from '@/lib/axiosInstance';
 import { getServerSession, NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import GoogleProvider from 'next-auth/providers/google';
 
 export const authOptions: NextAuthOptions = {
   pages: {
     signIn: '/login',
   },
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      authorization: {
+        url: `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google/redirect`,
+        params: { prompt: 'consent'},
+      },
+    }),
     CredentialsProvider({
       name: 'Email and Password',
       credentials: {
@@ -36,7 +45,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user}) {
       if (user) {
         token.user = user;
         token.access_token = user.access_token;
