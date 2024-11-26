@@ -2,7 +2,7 @@ import { AuthorizedRoute } from '@/enums/routes.enums';
 import { LogInIcon } from 'lucide-react';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
-import LoginForm from './LoginForm';
+import LoginForm from '../../../components/auth/LoginForm';
 
 export default async function Login() {
   const session = await getServerSession();
