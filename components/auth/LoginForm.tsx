@@ -55,59 +55,61 @@ export default function LoginForm() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(handleFormSubmit)}
-      className='grid w-64 gap-4 md:w-96'
-    >
-      <div className='grid gap-1'>
-        <Label>E-mail</Label>
-        <Input
-          id='email'
-          type='text'
-          placeholder='e-mail'
-          {...register('email')}
-        />
-        {errors.email && (
-          <p className='text-sm text-red-600'>{errors.email.message}</p>
-        )}
-      </div>
-      <div className='grid gap-1'>
-        <Label>Password</Label>
-        <Input
-          id='password'
-          placeholder='password'
-          type='password'
-          {...register('password')}
-        />
-        {errors.password && (
-          <p className='text-sm text-red-600'>{errors.password.message}</p>
-        )}
-        <div className='flex items-center justify-between'>
-          <div className='flex items-center space-x-2'>
-            <Checkbox id='remember' />
-            <Label htmlFor='remember' className='text-sm'>
-              Remember
-            </Label>
-          </div>
-          <div className='flex items-center'>
-            <Button asChild variant={'link'} className='pr-2'>
-              <a href={'/forgot'}>Forgot password?</a>
-            </Button>
+    <>
+      <form
+        onSubmit={handleSubmit(handleFormSubmit)}
+        className='grid w-64 gap-4 md:w-96'
+      >
+        <div className='grid gap-1'>
+          <Label>E-mail</Label>
+          <Input
+            id='email'
+            type='text'
+            placeholder='e-mail'
+            {...register('email')}
+          />
+          {errors.email && (
+            <p className='text-sm text-red-600'>{errors.email.message}</p>
+          )}
+        </div>
+        <div className='grid gap-1'>
+          <Label>Password</Label>
+          <Input
+            id='password'
+            placeholder='password'
+            type='password'
+            {...register('password')}
+          />
+          {errors.password && (
+            <p className='text-sm text-red-600'>{errors.password.message}</p>
+          )}
+          <div className='flex items-center justify-between'>
+            <div className='flex items-center space-x-2'>
+              <Checkbox id='remember' />
+              <Label htmlFor='remember' className='text-sm'>
+                Remember
+              </Label>
+            </div>
+            <div className='flex items-center'>
+              <Button asChild variant={'link'} className='pr-2'>
+                <a href={'/forgot'}>Forgot password?</a>
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
-      <Button
-        className='w-full bg-black text-white hover:bg-gray-800'
-        type='submit'
-      >
-        LOG IN
-      </Button>
-      {submitError && (
-        <p className='text-center text-sm text-red-600'>{submitError}</p>
-      )}
-      <Button className='' onClick={handleGoogleSignIn}>
+        <Button
+          className='w-full bg-black text-white hover:bg-gray-800'
+          type='submit'
+        >
+          LOG IN
+        </Button>
+        {submitError && (
+          <p className='text-center text-sm text-red-600'>{submitError}</p>
+        )}
+      </form>
+      <Button className='m-2 w-full' onClick={handleGoogleSignIn}>
         Sign in with google!
       </Button>
-    </form>
+    </>
   );
 }
