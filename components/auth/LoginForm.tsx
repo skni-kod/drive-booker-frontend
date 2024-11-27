@@ -6,10 +6,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
+import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z, ZodType } from 'zod';
+import googleIcon from "./googleIcon.svg";
+
 
 type TLoginForm = {
   email: string;
@@ -107,8 +110,18 @@ export default function LoginForm() {
           <p className='text-center text-sm text-red-600'>{submitError}</p>
         )}
       </form>
-      <Button className='m-2 w-full' onClick={handleGoogleSignIn}>
-        Sign in with google!
+      
+      <div className="flex items-center justify-center my-6 w-full">
+        <div className="border-t border-black w-full"></div>
+        <span className="px-4 text-gray-500 text-sm">OR</span>
+        <div className="border-t border-black w-full"></div>
+      </div>
+
+      <Button className='px-10 py-5' onClick={handleGoogleSignIn}>
+        <span className='flex items-center justify-center space-x-3'>
+          <Image src={googleIcon} alt='googleIcon' className='w-5 h-5'></Image>
+          <span className='font-bold'>Google</span>
+        </span>
       </Button>
     </>
   );
