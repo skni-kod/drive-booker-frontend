@@ -4,6 +4,7 @@ export enum UnAuthorizedRoute {
 }
 export enum AuthorizedRoute {
   Dashboard = '/dashboard',
+  Profile = '/profile',
 }
 export enum CommonRoutes {
   Home = '/',
@@ -12,4 +13,5 @@ export enum CommonRoutes {
 export enum ApiRoutes {
   Register = '/api/register',
   Login = '/api/login',
+  User = '/api/users',
 }
