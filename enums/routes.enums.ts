@@ -12,4 +12,5 @@ export enum CommonRoutes {
 export enum ApiRoutes {
   Register = '/api/register',
   Login = '/api/login',
+  Google = '/api/login/google',
 }

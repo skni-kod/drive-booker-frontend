@@ -4,15 +4,16 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { ApiRoutes } from '@/enums/routes.enums';
+import { axiosInstance } from '@/lib/axiosInstance';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signIn } from 'next-auth/react';
+import axios, { AxiosError } from 'axios';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z, ZodType } from 'zod';
-import googleIcon from "./googleIcon.svg";
-
+import googleIcon from './googleIcon.svg';
 
 type TLoginForm = {
   email: string;
@@ -37,23 +38,25 @@ export default function LoginForm() {
 
   const handleFormSubmit = async (data: TLoginForm) => {
     try {
-      const res = await signIn('email-based', {
-        email: data.email,
-        password: data.password,
-        redirect: false,
-      });
-      if (res?.status === 200) {
+      setSubmitError(null);
+      await axiosInstance.get('/sanctum/csrf-cookie');
+      const response = await axios.post(ApiRoutes.Login, data);
+      console.log(response);
+      if (response.status === 200) {
         router.push(callbackUrl);
       }
-      if (res?.status === 401) {
-        setSubmitError(res?.error || 'Login failed. Please try again.');
-      }
     } catch (error) {
-      console.log(error);
+      const axiosError = error as AxiosError<{ message: string }>;
+      console.error('Login error:', axiosError);
+      setSubmitError(
+        axiosError.response?.data?.message ||
+          'Something went wrong. Please try again.',
+      );
     }
   };
 
   const handleGoogleSignIn = async () => {
+    await axiosInstance.get('/sanctum/csrf-cookie');
     window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/google/redirect`;
   };
 
@@ -110,16 +113,16 @@ export default function LoginForm() {
           <p className='text-center text-sm text-red-600'>{submitError}</p>
         )}
       </form>
-      
-      <div className="flex items-center justify-center my-6 w-full">
-        <div className="border-t border-black w-full"></div>
-        <span className="px-4 text-gray-500 text-sm">OR</span>
-        <div className="border-t border-black w-full"></div>
+
+      <div className='my-6 flex w-full items-center justify-center'>
+        <div className='w-full border-t border-black'></div>
+        <span className='px-4 text-sm text-gray-500'>OR</span>
+        <div className='w-full border-t border-black'></div>
       </div>
 
       <Button className='px-10 py-5' onClick={handleGoogleSignIn}>
         <span className='flex items-center justify-center space-x-3'>
-          <Image src={googleIcon} alt='googleIcon' className='w-5 h-5'></Image>
+          <Image src={googleIcon} alt='googleIcon' className='h-5 w-5'></Image>
           <span className='font-bold'>Google</span>
         </span>
       </Button>
