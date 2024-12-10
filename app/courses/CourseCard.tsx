@@ -1,9 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Calendar, Tag } from 'lucide-react';
+import Link from 'next/link';
 
 interface CourseCardProps {
-  title: string;
+  name: string;
+  id: string;
   category: string;
   address: string;
   date: string;
@@ -11,7 +13,8 @@ interface CourseCardProps {
 }
 
 export default function CourseCard({
-  title,
+  name,
+  id,
   category,
   address,
   date,
@@ -28,7 +31,7 @@ export default function CourseCard({
               {category}
             </span>
           </div>
-          <h3 className='mb-2 text-lg font-semibold'>{title}</h3>
+          <h3 className='mb-2 text-lg font-semibold'>{name}</h3>
           <div className='flex justify-between text-lg'>
             <div className='flex flex-row'>
               <Calendar className='mr-1 h-4 w-4 text-green-600' />
@@ -47,7 +50,7 @@ export default function CourseCard({
           <div className='h-16 w-16 shrink-0 rounded-sm bg-muted' />
 
           <div className='flex-1'>
-            <h3 className='font-medium'>{title}</h3>
+            <h3 className='font-medium'>{name}</h3>
             <p className='text-sm text-muted-foreground'>{category}</p>
             <p className='truncate text-sm text-muted-foreground'>{address}</p>
           </div>
@@ -62,8 +65,8 @@ export default function CourseCard({
               </div>
             </div>
             <div className='flex gap-2'>
-              <Button variant='outline' size='sm'>
-                DETAILS
+              <Button variant='outline' size='sm' asChild>
+                <Link href={`/courses/${id}`}>DETAILS</Link>
               </Button>
               <Button size='sm'>SIGN UP</Button>
             </div>
