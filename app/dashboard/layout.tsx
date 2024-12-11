@@ -1,7 +1,7 @@
 'use client';
 
+import { logout } from '@/actions/logout';
 import { Button } from '@/components/ui/button';
-import { signOut } from 'next-auth/react';
 import { ReactNode } from 'react';
 
 export default function DashboardLayout({
@@ -11,7 +11,7 @@ export default function DashboardLayout({
 }>) {
   return (
     <div className='flex h-screen flex-col'>
-      <Button onClick={() => signOut({ callbackUrl: '/', redirect: true })}>
+      <Button onClick={logout} className='ml-auto w-1/4'>
         LOGOUT
       </Button>
       <div>{children}</div>

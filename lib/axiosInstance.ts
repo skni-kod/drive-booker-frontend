@@ -1,13 +1,15 @@
-import axios, { AxiosInstance } from 'axios';
-import { getSession } from 'next-auth/react';
+import { getSession } from '@/actions/getSession';
+import axios from 'axios';
 
-const axiosInstance = axios.create({
+export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
+  withXSRFToken: true,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
-    // 'Cache-Control': 'no-cache',
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
   },
 });
 
@@ -15,8 +17,8 @@ axiosInstance.interceptors.request.use(
   async (config) => {
     const session = await getSession();
 
-    if (session?.user?.access_token) {
-      config.headers.Authorization = `Bearer ${session.user.access_token}`;
+    if (session?.access_token && session?.isLoggedIn === true) {
+      config.headers.Authorization = `Bearer ${session.access_token}`;
     }
 
     return config;
@@ -25,17 +27,3 @@ axiosInstance.interceptors.request.use(
     return Promise.reject(error);
   },
 );
-
-export const axiosServerInstance = (accessToken: string): AxiosInstance =>
-  axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL,
-    withCredentials: true,
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      'Cache-Control': 'no-cache',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-
-export default axiosInstance;

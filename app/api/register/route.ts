@@ -1,7 +1,7 @@
 //! DELETE LATER ONLY FOR TESTING PURPOSE
 
 import { ApiRoutes } from '@/enums/routes.enums';
-import axiosInstance from '@/lib/axiosInstance';
+import { axiosInstance } from '@/lib/axiosInstance';
 import { NextResponse } from 'next/server';
 export async function POST(req: Request) {
   try {
