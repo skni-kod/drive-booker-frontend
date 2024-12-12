@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { ApiRoutes } from '@/enums/routes.enums';
+import axiosInstance from '@/lib/axiosInstance';
 import { useState } from 'react';
 import ConfirmPopup from '../components/ConfirmPopup';
 
@@ -49,21 +51,12 @@ const DataTab: React.FC<DataTabProps> = ({
     };
 
     const handleSubmit = async () => {
-        if (!id) {
-            alert('User ID is not available');
-            return;
-        }
-
         try {
-            const response = await fetch(`/api/users?id=${id}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-            });
-            await response.json();
-            //const response = await axiosInstance.post(`${ApiRoutes.User}/${id}`, formData);
+            const response = await axiosInstance.put(`${ApiRoutes.User}`, formData);
+            const data = await response.data;
+            console.log(data)
         } catch (err) {
-            console.log(err);
+            console.log("DUPA");
         }
     };
 

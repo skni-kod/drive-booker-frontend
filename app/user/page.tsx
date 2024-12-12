@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ApiRoutes } from "@/enums/routes.enums"
 import axiosInstance from "@/lib/axiosInstance"
-import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import DataTab from "./tabs/DataTab"
+import PaymentTab from "./tabs/PaymentTab"
 
 
 interface User {
@@ -21,6 +21,12 @@ interface User {
     zip_code: string;
     street: string;
     house_number: string;
+
+    card_first_name: string;
+    card_last_name: string;
+    card_number: number;
+    card_expiry_date: string;
+    card_cvv: number;
 }
 
 const ProfilePage = () => {
@@ -30,14 +36,12 @@ const ProfilePage = () => {
     const [error, setError] = useState<string | null>(null);
 
 
-    const { id } = useParams();
 
     useEffect(() => {
-        if (!id) return;
 
         const fetchUserData = async () => {
             try {
-                const response = await axiosInstance.get(`${ApiRoutes.User}/${id}`);
+                const response = await axiosInstance.get(`${ApiRoutes.User}`);
                 const data = await response.data;
                 setUser(data);
             } catch (error) {
@@ -45,15 +49,13 @@ const ProfilePage = () => {
             }
         };
 
-
         fetchUserData();
 
-    }, [id]);
+    }, []);
 
     if (!user && !error) {
         return <div>Loading...</div>;
     }
-
 
     return (
         <div>
@@ -94,7 +96,16 @@ const ProfilePage = () => {
                                 house_number={user?.house_number}
                             />
                         </TabsContent>
-                        <TabsContent value="payment">Payment.</TabsContent>
+                        <TabsContent value="payment">
+                            <PaymentTab
+                                id={user?.id}
+                                card_first_name={user?.card_first_name}
+                                card_last_name={user?.card_last_name}
+                                card_number={user?.card_number}
+                                card_expiry_date={user?.card_expiry_date}
+                                card_cvv={user?.card_cvv}
+                            />
+                        </TabsContent>
                         <TabsContent value="settings">Settings</TabsContent>
                     </Tabs>
                 </div>
