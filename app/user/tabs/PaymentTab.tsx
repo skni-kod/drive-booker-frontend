@@ -45,9 +45,10 @@ const PaymentTab: React.FC<PaymenTabProps> = (
         try {
             const response = await axiosInstance.put(`${ApiRoutes.User}`, formData);
             const data = await response.data;
-            console.log(data)
+            setFormData(data);
+            window.location.reload();
         } catch (err) {
-            console.log("DUPA");
+            console.log("Failed to update user data!");
         }
     };
 

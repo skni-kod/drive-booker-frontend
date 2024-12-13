@@ -54,16 +54,16 @@ const DataTab: React.FC<DataTabProps> = ({
         try {
             const response = await axiosInstance.put(`${ApiRoutes.User}`, formData);
             const data = await response.data;
-            console.log(data)
+            setFormData(data);
+            window.location.reload();
         } catch (err) {
-            console.log("DUPA");
+            console.log("Failed to update user data!");
         }
     };
 
     const handleConfirm = () => {
         handleSubmit();
         setIsModalOpen(false);
-        window.location.reload();
     };
 
     return (
