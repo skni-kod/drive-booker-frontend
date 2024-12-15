@@ -7,19 +7,30 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import axiosInstance from '@/lib/axiosInstance';
-import CourseCard from './CourseCard';
+import { Suspense } from 'react';
+import { CoursesList } from './CoursesList';
+import { fetchCourses } from './fetchCourses';
+import { PaginationWithLinks } from './paginationComponent';
 
-export default async function CoursePage() {
+interface SearchParams {
+  page?: string;
+}
+
+export default async function CoursePage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
   try {
-    const response = await axiosInstance.get('/api/courses');
-    const { data } = response.data;
+    const pageParams = await searchParams;
+    const { data, meta } = await fetchCourses(pageParams.page);
+
     return (
       <main className='flex min-h-screen flex-col items-center justify-center gap-4'>
         <h1 className='text-2xl font-bold'>Driving courses in your area</h1>
-        <div className='flex max-w-4xl flex-col gap-2 md:w-2/3'>
+        <div className='flex max-w-4xl flex-col gap-2 sm:w-3/4'>
           <div className='flex w-full flex-col justify-between py-4 sm:flex-row'>
-            <div className='flex flex-row gap-2 py-2'>
+            <div className='flex flex-row gap-2 py-2 sm:py-0'>
               <Select>
                 <SelectTrigger>
                   <SelectValue placeholder='Sort' />
@@ -27,7 +38,6 @@ export default async function CoursePage() {
                 <SelectContent>
                   <SelectItem value='1'>some method</SelectItem>
                   <SelectItem value='2'>some method</SelectItem>
-                  <SelectItem value='3'>some method</SelectItem>
                 </SelectContent>
               </Select>
               <Select>
@@ -37,7 +47,6 @@ export default async function CoursePage() {
                 <SelectContent>
                   <SelectItem value='1'>some location</SelectItem>
                   <SelectItem value='2'>some location</SelectItem>
-                  <SelectItem value='3'>some location</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -46,35 +55,26 @@ export default async function CoursePage() {
               <Button>Search</Button>
             </div>
           </div>
-          {data.map(
-            (course: {
-              id: string;
-              school: { name: string; address: string };
-              category: { name: string };
-              start_date: string;
-              price: string;
-            }) => {
-              return (
-                <CourseCard
-                  key={course.id}
-                  id={course.id}
-                  name={course.school.name}
-                  category={course.category.name}
-                  address={course.school.address}
-                  date={course.start_date}
-                  price={course.price}
-                />
-              );
-            },
-          )}
         </div>
+        <Suspense fallback={<p>Loading courses...</p>}>
+          <CoursesList courses={data} />
+          {data.length > 0 && (
+            <PaginationWithLinks
+              page={meta.current_page}
+              totalCount={meta.total}
+              pageSize={meta.per_page}
+            />
+          )}
+        </Suspense>
       </main>
     );
   } catch (error) {
-    console.log(error);
+    console.error('Failed to load courses:', error);
     return (
       <main>
-        <p>Something went wrong</p>
+        <p className='text-red-500'>
+          Something went wrong. Please try again later.
+        </p>
       </main>
     );
   }

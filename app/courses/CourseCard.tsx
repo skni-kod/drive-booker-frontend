@@ -24,7 +24,7 @@ export default function CourseCard({
     <Card className='w-full max-w-4xl'>
       <CardContent className='p-4'>
         {/* mobile screen size */}
-        <div className='flex flex-col sm:hidden'>
+        <div className='flex flex-col md:hidden'>
           <div className='mb-2 flex items-start justify-between'>
             <div className='h-8 w-8 rounded-sm bg-muted' />
             <span className='rounded bg-black px-2 py-1 text-xs text-white'>
@@ -46,7 +46,7 @@ export default function CourseCard({
           </div>
         </div>
         {/* sm and larger screens */}
-        <div className='hidden items-center gap-4 sm:flex'>
+        <div className='hidden items-center gap-4 md:flex'>
           <div className='h-16 w-16 shrink-0 rounded-sm bg-muted' />
 
           <div className='flex-1'>
