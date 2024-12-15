@@ -40,7 +40,6 @@ const ProfileContent = ({ user }: ProfileContentProps) => {
                     </TabsList>
                     <TabsContent value="account">
                         <DataTab
-                            id={user.id}
                             name={user.name}
                             last_name={user.last_name}
                             email={user.email}
@@ -54,7 +53,6 @@ const ProfileContent = ({ user }: ProfileContentProps) => {
                     </TabsContent>
                     <TabsContent value="payment">
                         <PaymentTab
-                            id={user.id}
                             card_first_name={user.card_first_name}
                             card_last_name={user.card_last_name}
                             card_number={user.card_number}

@@ -13,8 +13,7 @@ export interface User_Page {
 
     card_first_name: string;
     card_last_name: string;
-    card_number: number;
+    card_number: string;
     card_expiry_date: string;
-    card_cvv: number;
+    card_cvv: string;
 }
-

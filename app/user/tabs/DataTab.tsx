@@ -1,13 +1,16 @@
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { ApiRoutes } from '@/enums/routes.enums';
 import axiosInstance from '@/lib/axiosInstance';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import ConfirmPopup from '../components/ConfirmPopup';
+import FormField from '../components/FormField';
+import { UserDataSchema } from "../validation_schema";
 
 interface DataTabProps {
-    id?: number;
     name?: string;
     last_name?: string;
     email?: string;
@@ -20,158 +23,103 @@ interface DataTabProps {
 }
 
 const DataTab: React.FC<DataTabProps> = ({
-    id,
-    name: initialName = '',
-    last_name: initialLastName = '',
-    email: initialEmail = '',
-    phone_number: initialPhoneNumber = '',
-    voivodship: initialVoivodship = '',
-    city: initialCity = '',
-    zip_code: initialZipCode = '',
-    street: initialStreet = '',
-    house_number: initialHouseNumber = '',
+    ...initialValues
 }) => {
-    const [formData, setFormData] = useState({
-        name: initialName,
-        last_name: initialLastName,
-        email: initialEmail,
-        phone_number: initialPhoneNumber,
-        voivodship: initialVoivodship,
-        city: initialCity,
-        zip_code: initialZipCode,
-        street: initialStreet,
-        house_number: initialHouseNumber,
-    });
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [formData, setFormData] = useState<DataTabProps | null>(null);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { id, value } = e.target;
-        setFormData((prev) => ({ ...prev, [id]: value }));
-    };
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: zodResolver(UserDataSchema),
+        defaultValues: initialValues
+    });
+    const openModal = (data: DataTabProps) => {
+        setFormData(data);
+        setIsModalOpen(true);
+    }
 
-    const handleSubmit = async () => {
+
+    const handleConfirm = async () => {
+        if (!formData) return;
+
         try {
-            const response = await axiosInstance.put(`${ApiRoutes.User}`, formData);
-            const data = await response.data;
-            setFormData(data);
+            await axiosInstance.put(`${ApiRoutes.User}`, formData);
+            setIsModalOpen(false);
             window.location.reload();
+            toast.success("Dane zostały zaktualizowane!");
         } catch (err) {
-            console.log("Failed to update user data!");
+            toast.error("Wystąpił błąd podczas aktualizacji danych.");
         }
     };
 
-    const handleConfirm = () => {
-        handleSubmit();
-        setIsModalOpen(false);
-    };
 
     return (
         <>
-            <form className="gap-4 space-y-12 mt-5">
+            <form onSubmit={handleSubmit((data) => openModal(data))} className="gap-4 space-y-12 mt-5">
                 <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-5">
-                        <div>
-                            <Label className="text-xl">Imię</Label>
-                            <Input
-                                id="name"
-                                type="text"
-                                value={formData.name}
-                                onChange={handleChange}
-                                className="bg-white"
-                            />
-                        </div>
-                        <div>
-                            <Label className="text-xl">Numer telefonu</Label>
-                            <Input
-                                id="phone_number"
-                                type="text"
-                                value={formData.phone_number}
-                                onChange={handleChange}
-                                className="bg-white"
-                            />
-                        </div>
-                        <div>
-                            <Label className="text-xl">Województwo</Label>
-                            <Input
-                                id="voivodship"
-                                type="text"
-                                value={formData.voivodship}
-                                onChange={handleChange}
-                                className="bg-white"
-                            />
-                        </div>
-                        <div>
-                            <Label className="text-xl">Kod pocztowy</Label>
-                            <Input
-                                id="zip_code"
-                                type="text"
-                                value={formData.zip_code}
-                                onChange={handleChange}
-                                className="bg-white"
-                            />
-                        </div>
-                        <div>
-                            <Label className="text-xl">Numer domu</Label>
-                            <Input
-                                id="house_number"
-                                type="text"
-                                value={formData.house_number}
-                                onChange={handleChange}
-                                className="bg-white"
-                            />
-                        </div>
+                        <FormField
+                            id="name"
+                            label='Imię'
+                            register={register}
+                            error={errors.name?.message} />
+                        <FormField
+                            id="phone_number"
+                            label="Numer telefonu"
+                            register={register}
+                            error={errors.phone_number?.message} />
+                        <FormField
+                            id="voivodship"
+                            label="Województwo"
+                            register={register}
+                            error={errors.voivodship?.message} />
+                        <FormField
+                            id="zip_code"
+                            label="Kod pocztowy"
+                            register={register}
+                            error={errors.zip_code?.message} />
+                        <FormField
+                            id="house_number"
+                            label="Numer domu"
+                            register={register}
+                            error={errors.house_number?.message} />
                     </div>
                     <div className="space-y-5">
-                        <div>
-                            <Label className="text-xl">Nazwisko</Label>
-                            <Input
-                                id="last_name"
-                                type="text"
-                                value={formData.last_name}
-                                onChange={handleChange}
-                                className="bg-white"
-                            />
-                        </div>
-                        <div>
-                            <Label className="text-xl">E-mail</Label>
-                            <Input
-                                id="email"
-                                type="text"
-                                value={formData.email}
-                                onChange={handleChange}
-                                className="bg-white"
-                            />
-                        </div>
-                        <div>
-                            <Label className="text-xl">Miasto</Label>
-                            <Input
-                                id="city"
-                                type="text"
-                                value={formData.city}
-                                onChange={handleChange}
-                                className="bg-white"
-                            />
-                        </div>
-                        <div>
-                            <Label className="text-xl">Ulica</Label>
-                            <Input
-                                id="street"
-                                type="text"
-                                value={formData.street}
-                                onChange={handleChange}
-                                className="bg-white"
-                            />
-                        </div>
+                        <FormField
+                            id="last_name"
+                            label='Nazwisko'
+                            register={register}
+                            error={errors.last_name?.message} />
+                        <FormField
+                            id="email"
+                            label='Email'
+                            register={register}
+                            error={errors.email?.message}
+                            disabled />
+                        <FormField
+                            id="city"
+                            label="Miasto"
+                            register={register}
+                            error={errors.city?.message} />
+                        <FormField
+                            id="street"
+                            label="Ulica"
+                            register={register}
+                            error={errors.street?.message} />
                     </div>
                 </div>
-                <Button type="button" className="px-16 py-5 font-bold" onClick={() => setIsModalOpen(true)}>
+                <Button type="submit" className="px-16 py-5 font-bold">
                     ZATWIERDŹ ZMIANY
                 </Button>
             </form>
 
-            <ConfirmPopup isOpen={isModalOpen} onConfirm={handleConfirm} onCancel={() => setIsModalOpen(false)} />
+            <ConfirmPopup
+                isOpen={isModalOpen}
+                onConfirm={handleConfirm}
+                onCancel={() => setIsModalOpen(false)} />
+            <ToastContainer />
         </>
+
     );
 };
 

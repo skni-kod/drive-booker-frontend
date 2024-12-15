@@ -1,131 +1,101 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { ApiRoutes } from "@/enums/routes.enums";
 import axiosInstance from "@/lib/axiosInstance";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import ConfirmPopup from "../components/ConfirmPopup";
+import FormField from "../components/FormField";
+import { UserPaymentSchema } from "../validation_schema";
 
-
-interface PaymenTabProps {
-    id?: number;
+interface PaymentTabProps {
     card_first_name?: string;
     card_last_name?: string;
-    card_number?: number;
+    card_number?: string;
     card_expiry_date?: string;
-    card_cvv?: number;
+    card_cvv?: string;
 }
 
-const PaymentTab: React.FC<PaymenTabProps> = (
-    {
-        id,
-        card_first_name: initialCardFirstName = '',
-        card_last_name: initialCardLastName = '',
-        card_number: initialCardNumber = '',
-        card_expiry_date: initialCardExpiryDate = '',
-        card_cvv: initialCardCvv = ''
-    }
-) => {
-    const [formData, setFormData] = useState({
-        card_first_name: initialCardFirstName,
-        card_last_name: initialCardLastName,
-        card_number: initialCardNumber,
-        card_expiry_date: initialCardExpiryDate,
-        card_cvv: initialCardCvv
+const PaymentTab: React.FC<PaymentTabProps> = ({
+    ...initialValues
+}) => {
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: zodResolver(UserPaymentSchema),
+        defaultValues: initialValues
     });
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [formData, setFormData] = useState<PaymentTabProps | null>(null);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { id, value } = e.target;
-        setFormData((prev) => ({ ...prev, [id]: value }));
+    const openModal = (data: PaymentTabProps) => {
+        setFormData(data);
+        setIsModalOpen(true);
     };
 
-    const handleSubmit = async () => {
+    const handleConfirm = async () => {
+        if (!formData) return;
+
         try {
-            const response = await axiosInstance.put(`${ApiRoutes.User}`, formData);
-            const data = await response.data;
-            setFormData(data);
+            await axiosInstance.put(`${ApiRoutes.User}`, formData);
+            setIsModalOpen(false);
             window.location.reload();
+            toast.success("Dane zostały zaktualizowane!");
         } catch (err) {
-            console.log("Failed to update user data!");
+            toast.error("Wystąpił błąd podczas aktualizacji danych.");
         }
     };
 
-    const handleConfirm = () => {
-        handleSubmit();
-        setIsModalOpen(false);
-        window.location.reload();
-    };
-
-
     return (
         <>
-            <form className="gap-4 space-y-12 mt-5">
+            <form onSubmit={handleSubmit((data) => openModal(data))} className="gap-4 space-y-12 mt-5">
                 <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-5">
-                        <div>
-                            <Label className="text-xl">Imię</Label>
-                            <Input
-                                id="card_first_name"
-                                type="text"
-                                value={formData.card_first_name}
-                                onChange={handleChange}
-                                className="bg-white"
-                            />
-                        </div>
-                        <div>
-                            <Label className="text-xl">Numer karty</Label>
-                            <Input
-                                id="card_number"
-                                type="text"
-                                value={formData.card_number}
-                                onChange={handleChange}
-                                className="bg-white"
-                            />
-                        </div>
-                        <div>
-                            <Label className="text-xl">CVV</Label>
-                            <Input
-                                id="card_cvv"
-                                type="text"
-                                value={formData.card_cvv}
-                                onChange={handleChange}
-                                className="bg-white"
-                            />
-                        </div>
-
+                        <FormField
+                            id="card_first_name"
+                            label="Imię"
+                            register={register}
+                            error={errors.card_first_name?.message}
+                        />
+                        <FormField
+                            id="card_number"
+                            label="Numer karty"
+                            register={register}
+                            error={errors.card_number?.message}
+                        />
+                        <FormField
+                            id="card_cvv"
+                            label="CVV"
+                            register={register}
+                            error={errors.card_cvv?.message}
+                        />
                     </div>
                     <div className="space-y-5">
-                        <div>
-                            <Label className="text-xl">Nazwisko</Label>
-                            <Input
-                                id="card_last_name"
-                                type="text"
-                                value={formData.card_last_name}
-                                onChange={handleChange}
-                                className="bg-white"
-                            />
-                        </div>
-                        <div>
-                            <Label className="text-xl">Data Ważności</Label>
-                            <Input
-                                id="card_expiry_date"
-                                type="text"
-                                value={formData.card_expiry_date}
-                                onChange={handleChange}
-                                className="bg-white"
-                            />
-                        </div>
+                        <FormField
+                            id="card_last_name"
+                            label="Nazwisko"
+                            register={register}
+                            error={errors.card_last_name?.message}
+                        />
+                        <FormField
+                            id="card_expiry_date"
+                            label="Data Ważności"
+                            register={register}
+                            error={errors.card_expiry_date?.message}
+                        />
                     </div>
                 </div>
-                <Button type="button" className="px-16 py-5 font-bold" onClick={() => setIsModalOpen(true)}>
+                <Button type="submit" className="px-16 py-5 font-bold">
                     ZATWIERDŹ ZMIANY
                 </Button>
             </form>
-            <ConfirmPopup isOpen={isModalOpen} onConfirm={handleConfirm} onCancel={() => setIsModalOpen(false)} />
+            <ConfirmPopup
+                isOpen={isModalOpen}
+                onConfirm={handleConfirm}
+                onCancel={() => setIsModalOpen(false)}
+            />
         </>
-    )
-}
+    );
+};
 
 export default PaymentTab;
