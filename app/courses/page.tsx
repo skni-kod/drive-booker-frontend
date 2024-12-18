@@ -27,36 +27,37 @@ export default async function CoursePage({
 
     return (
       <main className='flex min-h-screen flex-col items-center justify-center gap-4'>
-        <h1 className='text-2xl font-bold'>Driving courses in your area</h1>
-        <div className='flex max-w-4xl flex-col gap-2 sm:w-3/4'>
-          <div className='flex w-full flex-col justify-between py-4 sm:flex-row'>
-            <div className='flex flex-row gap-2 py-2 sm:py-0'>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder='Sort' />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value='1'>some method</SelectItem>
-                  <SelectItem value='2'>some method</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder='Location' />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value='1'>some location</SelectItem>
-                  <SelectItem value='2'>some location</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className='flex flex-row gap-4'>
-              <Input />
-              <Button>Search</Button>
-            </div>
+        <h1 className='text-2xl font-bold'>
+          Kursy nauki jazdy w twojej okolicy
+        </h1>
+        {/* This should be in separate component with handling filtering  */}
+        <div className='flex w-5/6 max-w-4xl flex-col justify-between gap-2 py-4 md:flex-row'>
+          <div className='flex flex-row gap-2 py-2 sm:py-0'>
+            <Select>
+              <SelectTrigger>
+                <SelectValue placeholder='SORTUJ' />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value='1'>od najtańszych</SelectItem>
+                <SelectItem value='2'>od najdroższych</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select>
+              <SelectTrigger>
+                <SelectValue placeholder='LOKALIZACJA' />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value='1'>Rzeszów</SelectItem>
+                <SelectItem value='2'>Kraków</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className='flex flex-row gap-4'>
+            <Input />
+            <Button>SZUKAJ</Button>
           </div>
         </div>
-        <Suspense fallback={<p>Loading courses...</p>}>
+        <Suspense fallback={<p>Wczytywanie kursów...</p>}>
           <CoursesList courses={data} />
           {data.length > 0 && (
             <PaginationWithLinks
@@ -73,7 +74,7 @@ export default async function CoursePage({
     return (
       <main>
         <p className='text-red-500'>
-          Something went wrong. Please try again later.
+          Coś poszło nie tak. Spróbuj ponownie później.
         </p>
       </main>
     );

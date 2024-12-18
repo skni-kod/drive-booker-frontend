@@ -1,7 +1,9 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Calendar, Tag } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
+import calendar from './calendar.svg';
+import tags from './tags.svg';
 
 interface CourseCardProps {
   name: string;
@@ -32,14 +34,15 @@ export default function CourseCard({
             </span>
           </div>
           <h3 className='mb-2 text-lg font-semibold'>{name}</h3>
+          <div className='mb-2 w-full border-t border-gray-200'></div>
           <div className='flex justify-between text-lg'>
             <div className='flex flex-row'>
-              <Calendar className='mr-1 h-4 w-4 text-green-600' />
+              <Image src={calendar} alt='calendar' className='h-6 w-6 pr-1' />
               <span className='text-green-600'>{date}</span>
             </div>
             <div>
               <div className='flex flex-row'>
-                <Tag className='mr-1 h-4 w-4 text-green-600' />
+                <Image src={tags} alt='calendar' className='h-6 w-6 pr-1' />
                 <span className='text-green-600'>{price}</span>
               </div>
             </div>
@@ -58,17 +61,17 @@ export default function CourseCard({
           <div className='ml-auto flex shrink-0 flex-col items-end gap-2'>
             <div className='text-right'>
               <div className='text-sm text-muted-foreground'>
-                UPCOMING <span className='text-green-600'>{date}</span>
+                NAJBLIŻSZY TERMIN <span className='text-green-600'>{date}</span>
               </div>
               <div className='text-sm font-medium'>
-                FROM <span className='text-green-600'>{price}</span>
+                OD <span className='text-green-600'>{price}</span>
               </div>
             </div>
             <div className='flex gap-2'>
               <Button variant='outline' size='sm' asChild>
-                <Link href={`/courses/${id}`}>DETAILS</Link>
+                <Link href={`/courses/${id}`}>SZCZEGÓŁY</Link>
               </Button>
-              <Button size='sm'>SIGN UP</Button>
+              <Button size='sm'>ZAPISZ SIĘ</Button>
             </div>
           </div>
         </div>

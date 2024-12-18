@@ -18,27 +18,27 @@ export default function SingleCourseCard({
   price,
 }: SingleCourseCardProps) {
   return (
-    <Card className='w-full max-w-sm sm:w-1/2'>
+    <Card className='h-fit w-full max-w-sm md:w-1/2'>
       <CardHeader className='p-0'>
         <div className='h-48 w-full bg-muted' />
       </CardHeader>
       <CardContent className='space-y-3 p-6'>
         <div className='flex items-center justify-end gap-x-2 text-sm'>
-          <span className='font-medium text-primary'>START:</span>
-          <span className='text-blue-700'>{date}</span>
+          <span className='font-medium text-blue-700'>START:</span>
+          <span>{date}</span>
         </div>
         <div className='flex items-center justify-end gap-x-2 text-sm'>
-          <span className='font-medium text-primary'>CATEGORY:</span>
-          <span className='text-blue-700'>{category}</span>
+          <span className='font-medium text-blue-700'>KATEGORIA:</span>
+          <span>{category}</span>
         </div>
         <div className='flex items-center justify-end gap-x-2 text-sm'>
-          <span className='font-medium text-primary'>PRICE:</span>
+          <span className='font-medium text-blue-700'>CENA:</span>
           <span className='text-green-700'>{price} ZŁ</span>
         </div>
       </CardContent>
       <CardFooter>
         <Button className='w-full bg-black hover:bg-black/90' size='lg'>
-          SIGN IN
+          ZAPISZ SIĘ
         </Button>
       </CardFooter>
     </Card>
