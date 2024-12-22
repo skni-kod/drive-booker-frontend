@@ -4,14 +4,14 @@ export enum UnAuthorizedRoute {
 }
 export enum AuthorizedRoute {
   Dashboard = '/dashboard',
-  Profile = '/user',
+  Profile = '/dashboard/user',
 }
 export enum CommonRoutes {
   Home = '/',
 }
 
-export enum ApiRoutes {
-  Register = '/api/register',
-  Login = '/api/login',
-  User = '/api/user',
-}
+export const ApiRoutes = {
+  Register: '/api/register',
+  Login: '/api/login',
+  User: (id: string) => `/api/user/${id}`,
+};

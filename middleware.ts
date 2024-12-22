@@ -10,13 +10,6 @@ export default withAuth(function middleware() {}, {
       ) {
         return false;
       }
-      
-      if (
-        req.nextUrl.pathname.startsWith(AuthorizedRoute.Profile) &&
-        token === null)
-          {
-          return false;
-        }
       return true;
     },
   },

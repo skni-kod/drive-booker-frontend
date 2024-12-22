@@ -8,8 +8,5 @@
   "typescript.preferences.autoImportFileExcludePatterns": [
     "@radix-ui",
     "postcss"
-  ],
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
-  }
+  ]
 }

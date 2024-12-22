@@ -1,8 +1,8 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { signOut } from 'next-auth/react';
+import SideMenu from '@/components/SideMenu';
 import { ReactNode } from 'react';
+import { ToastContainer } from 'react-toastify';
 
 export default function DashboardLayout({
   children,
@@ -10,11 +10,10 @@ export default function DashboardLayout({
   children: ReactNode;
 }>) {
   return (
-    <div className='flex h-screen flex-col'>
-      <Button onClick={() => signOut({ callbackUrl: '/', redirect: true })}>
-        LOGOUT
-      </Button>
-      <div>{children}</div>
+    <div className='flex h-screen'>
+      <SideMenu />
+      <div className='flex-1 px-20'>{children}</div>
+      <ToastContainer />
     </div>
   );
 }

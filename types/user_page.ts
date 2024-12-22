@@ -11,6 +11,9 @@ export interface User_Page {
     street: string;
     house_number: string;
 
+}
+
+export interface User_CreditCard {
     card_first_name: string;
     card_last_name: string;
     card_number: string;

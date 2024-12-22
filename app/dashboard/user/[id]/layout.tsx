@@ -1,4 +1,3 @@
-import SideMenu from '@/components/SideMenu';
 import { ReactNode } from 'react';
 
 export default function ProfilePageLayout({
@@ -8,9 +7,8 @@ export default function ProfilePageLayout({
 }>) {
   return (
     <div className='flex h-screen '>
-      <SideMenu />
-      <div className='flex-1 px-20 pt-10'>
-        <h1 className="text-3xl">Mój profil</h1>
+      <div className='flex-1'>
+        <h1 className="text-3xl pb-5 pt-10">Mój profil</h1>
         {children}
       </div>
     </div>
