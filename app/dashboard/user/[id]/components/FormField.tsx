@@ -1,5 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { HTMLInputTypeAttribute } from 'react';
 import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
 
 interface FormValues {
@@ -9,7 +10,7 @@ interface FormValues {
 interface FormFieldProps<T extends FieldValues> {
   id: Path<T>;
   label: string;
-  type?: string;
+  type?: HTMLInputTypeAttribute;
   register: UseFormRegister<T>;
   error?: string;
   disabled?: boolean;
@@ -25,7 +26,9 @@ const FormField = <T extends FieldValues>({
 }: FormFieldProps<T>) => {
   return (
     <div>
-      <Label className='text-xl'>{label}</Label>
+      <Label htmlFor={id as string} className='text-xl'>
+        {label}
+      </Label>
       <Input
         id={id as string}
         type={type}

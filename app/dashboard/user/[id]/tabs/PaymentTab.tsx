@@ -10,19 +10,21 @@ import FormField from '../components/FormField';
 import { UserPaymentSchema } from '../validation_schema';
 
 interface FormValues {
-  card_first_name: string;
-  card_last_name: string;
-  card_number: string;
-  card_expiry_date: string;
-  card_cvv: string;
+  card_first_name?: string;
+  card_last_name?: string;
+  card_number?: string;
+  card_expiry_date?: string;
+  card_cvv?: string;
 }
 
 interface PaymentTabProps extends FormValues {
   userID?: string;
+  onUpdate?: () => void;
 }
 
 const PaymentTab: React.FC<PaymentTabProps> = ({
   userID,
+  onUpdate,
   ...initialValues
 }) => {
   const {
@@ -51,7 +53,7 @@ const PaymentTab: React.FC<PaymentTabProps> = ({
         formData,
       );
       setIsModalOpen(false);
-      window.location.reload();
+      onUpdate?.();
       toast.success('Dane zostały zaktualizowane!');
     } catch (err) {
       toast.error('Wystąpił błąd podczas aktualizacji danych.');

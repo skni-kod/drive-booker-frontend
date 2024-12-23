@@ -24,9 +24,14 @@ interface FormValues {
 
 interface DataTabProps extends FormValues {
   userID?: string;
+  onUpdate?: () => void;
 }
 
-const DataTab: React.FC<DataTabProps> = ({ userID, ...initialValues }) => {
+const DataTab: React.FC<DataTabProps> = ({
+  userID,
+  onUpdate,
+  ...initialValues
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState<FormValues | null>(null);
 
@@ -49,7 +54,7 @@ const DataTab: React.FC<DataTabProps> = ({ userID, ...initialValues }) => {
     try {
       await axiosInstance.put(`${ApiRoutes.User(userID)}`, formData);
       setIsModalOpen(false);
-      window.location.reload();
+      onUpdate?.();
       toast.success('Dane zostały zaktualizowane!');
     } catch (err) {
       toast.error('Wystąpił błąd podczas aktualizacji danych.');
