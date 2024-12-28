@@ -26,13 +26,13 @@ const FormField = <T extends FieldValues>({
 }: FormFieldProps<T>) => {
   return (
     <div>
-      <Label htmlFor={id as string} className='text-xl'>
+      <Label htmlFor={id as string} className='text-lg xl:text-xl'>
         {label}
       </Label>
       <Input
         id={id as string}
         type={type}
-        className='bg-white'
+        className='bg-white text-sm sm:text-base'
         {...register(id)}
         disabled={disabled}
       />

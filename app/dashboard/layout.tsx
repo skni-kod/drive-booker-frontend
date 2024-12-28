@@ -1,18 +1,19 @@
-'use client';
-
 import SideMenu from '@/components/SideMenu';
 import { ReactNode } from 'react';
 import { ToastContainer } from 'react-toastify';
 
-export default function DashboardLayout({
+export default function ProfilePageLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
   return (
     <div className='flex h-screen'>
+      {/* SIDE MENU */}
       <SideMenu />
-      <div className='flex-1 px-20'>{children}</div>
+
+      {/* CONTENT */}
+      <div className='flex-1 overflow-auto px-4 pt-10 md:px-10'>{children}</div>
       <ToastContainer />
     </div>
   );

@@ -73,30 +73,40 @@ const ProfileContent = () => {
   }
 
   return (
-    <div className='flex w-full gap-24'>
-      <div className='flex h-[790px] w-[370px] flex-col items-center bg-gray-200 pt-10'>
+    <div className='flex flex-col gap-10 lg:flex-row'>
+      {/* Left Section */}
+      <div className='flex flex-col items-center bg-gray-200 py-10 lg:h-[790px] lg:w-[370px]'>
         <div className='avatar'>
-          <div className='h-[290px] w-[290px] rounded-sm bg-white'>
-            {/* Image placeholder */}
-          </div>
+          <div className='h-[200px] w-[200px] rounded-sm bg-white sm:h-[290px] sm:w-[290px]'></div>
         </div>
-        <div className='mt-5'>
-          <h1 className='font-bold'>
+        <div className='mt-5 text-center'>
+          <h1 className='text-lg font-bold sm:text-xl'>
             {user.name} {user.last_name}
           </h1>
-          <h1 className='text-center'>{user.role}</h1>
+          <h1 className='text-sm sm:text-base md:text-lg xl:text-xl'>
+            {user.role}
+          </h1>
         </div>
+
         <div className='mt-10 flex flex-col gap-3'>
-          <Button className='px-20 py-5 font-bold'>ZMIEŃ ZDJĘCIE</Button>
-          <Button className='py-5 font-bold'>UDOSTĘPNIJ</Button>
+          <Button className='px-10 py-3 font-bold'>ZMIEŃ ZDJĘCIE</Button>
+          <Button className='py-3 font-bold'>UDOSTĘPNIJ</Button>
         </div>
       </div>
-      <div className='h-[790px] flex-1 bg-gray-200 p-5'>
+
+      {/* Right Section */}
+      <div className='flex-1 bg-gray-200 p-5'>
         <Tabs defaultValue='account' className='w-full'>
-          <TabsList>
-            <TabsTrigger value='account'>Moje dane</TabsTrigger>
-            <TabsTrigger value='payment'>Dane płatności</TabsTrigger>
-            <TabsTrigger value='settings'>Ustawienia</TabsTrigger>
+          <TabsList className='flex flex-col sm:flex-row'>
+            <TabsTrigger value='account' className='text-xl xl:text-2xl'>
+              Moje dane
+            </TabsTrigger>
+            <TabsTrigger value='payment' className='text-xl xl:text-2xl'>
+              Dane płatności
+            </TabsTrigger>
+            <TabsTrigger value='settings' className='text-xl xl:text-2xl'>
+              Ustawienia
+            </TabsTrigger>
           </TabsList>
           <TabsContent value='account'>
             <DataTab
@@ -130,5 +140,4 @@ const ProfileContent = () => {
     </div>
   );
 };
-
 export default ProfileContent;

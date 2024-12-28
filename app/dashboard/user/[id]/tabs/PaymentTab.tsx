@@ -64,9 +64,9 @@ const PaymentTab: React.FC<PaymentTabProps> = ({
     <>
       <form
         onSubmit={handleSubmit((data) => openModal(data))}
-        className='mt-5 gap-4 space-y-12'
+        className='mt-5 flex flex-col gap-4 space-y-12'
       >
-        <div className='grid grid-cols-2 gap-4'>
+        <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
           <div className='space-y-5'>
             <FormField
               id='card_first_name'
@@ -102,7 +102,10 @@ const PaymentTab: React.FC<PaymentTabProps> = ({
             />
           </div>
         </div>
-        <Button type='submit' className='px-16 py-5 font-bold'>
+        <Button
+          type='submit'
+          className='self-center px-16 py-5 font-bold sm:self-start'
+        >
           ZATWIERDŹ ZMIANY
         </Button>
       </form>

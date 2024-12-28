@@ -6,9 +6,9 @@ export default function ProfilePageLayout({
   children: ReactNode;
 }>) {
   return (
-    <div className='flex h-screen '>
-      <div className='flex-1'>
-        <h1 className="text-3xl pb-5 pt-10">Mój profil</h1>
+    <div className='flex'>
+      <div className='flex-1 py-10'>
+        <h1 className='mb-5 text-3xl'>Mój profil</h1>
         {children}
       </div>
     </div>
