@@ -16,7 +16,30 @@ interface Meta {
 
 export async function fetchCourses(
   page: string | undefined,
+  sort: string | undefined,
+  city: string | undefined,
+  name: string | undefined,
 ): Promise<{ data: Course[]; meta: Meta }> {
-  const response = await axiosInstance.get(`/api/courses?page=${page}`);
+  let url = '/api/courses';
+
+  if (page) {
+    url += `?page=${page}`;
+  }
+  if (sort) {
+    url += url.includes('?') ? `&sort=${sort}` : `?sort=${sort}`;
+  }
+  if (city) {
+    url += url.includes('?')
+      ? `&filter[school.city]=${city}`
+      : `?filter[school.city]=${city}`;
+  }
+  if (name) {
+    url += url.includes('?')
+      ? `&filter[school.name]=${name}`
+      : `?filter[school.name]=${name}`;
+  }
+
+  console.log(url);
+  const response = await axiosInstance.get(url);
   return response.data;
 }
