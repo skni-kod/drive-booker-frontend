@@ -2,11 +2,18 @@
 
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 const SideMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { data: session } = useSession();
+  const userID = session?.user.user.id;
+  const pathname = usePathname();
+
+  const isActive = (path: string) => path === pathname;
 
   return (
     <div>
@@ -33,9 +40,13 @@ const SideMenu = () => {
               <ul className='space-y-4'>
                 <li className='flex items-center'>
                   <div className='h-6 w-6 bg-muted-foreground'></div>
-                  <span className='ml-3 text-sm sm:text-base md:text-lg xl:text-xl'>
-                    Panel
-                  </span>
+                  <Link href='/dashboard'>
+                    <span
+                      className={`ml-3 text-sm sm:text-base md:text-lg xl:text-xl ${isActive('/dashboard') ? 'font-bold' : 'font-normal'}`}
+                    >
+                      Panel
+                    </span>
+                  </Link>
                 </li>
                 <li className='flex items-center'>
                   <div className='h-6 w-6 bg-muted-foreground'></div>
@@ -51,9 +62,13 @@ const SideMenu = () => {
                 </li>
                 <li className='flex items-center'>
                   <div className='h-6 w-6 bg-muted-foreground'></div>
-                  <span className='ml-3 text-sm sm:text-base md:text-lg xl:text-xl'>
-                    Mój profil
-                  </span>
+                  <Link href={`/dashboard/user/${userID}`}>
+                    <span
+                      className={`ml-3 text-sm sm:text-base md:text-lg xl:text-xl ${isActive(`/dashboard/user/${userID}`) ? 'font-bold' : 'font-normal'}`}
+                    >
+                      Mój profil
+                    </span>
+                  </Link>
                 </li>
               </ul>
               <Button className='text-sm font-bold'>OPŁAĆ KURS</Button>
