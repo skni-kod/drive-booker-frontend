@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import axiosInstance from '@/lib/axiosInstance';
 import Link from 'next/link';
-import SingleCourseCard from './SingleCourseCard';
+import SingleCourseCard from './_components/SingleCourseCard';
 
 export default async function CourseDetailsPage({
   params,

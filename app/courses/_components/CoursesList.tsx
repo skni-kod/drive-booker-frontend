@@ -1,5 +1,5 @@
+import { Course } from '@/services/courses/types';
 import CourseCard from './CourseCard';
-import { Course } from './fetchCourses';
 
 export function CoursesList({ courses }: { courses: Course[] }) {
   if (!courses.length) {

@@ -1,24 +1,24 @@
 'use client';
 
+import {
+  PaginationItem,
+  PaginationLink,
+  PaginationEllipsis,
+  Pagination,
+  PaginationContent,
+  PaginationPrevious,
+  PaginationNext,
+} from '@/components/ui/pagination';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { type ReactNode, useCallback } from 'react';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '../../components/ui/pagination';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../../components/ui/select';
 
 export interface PaginationWithLinksProps {
   pageSizeSelectOptions?: {

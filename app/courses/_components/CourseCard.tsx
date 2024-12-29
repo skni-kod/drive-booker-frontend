@@ -2,8 +2,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
-import calendar from './calendar.svg';
-import tags from './tags.svg';
+import calendar from '../_assets/calendar.svg';
+import tags from '../_assets/tags.svg';
 
 interface CourseCardProps {
   name: string;

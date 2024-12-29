@@ -1,22 +1,10 @@
 import axiosInstance from '@/lib/axiosInstance';
-
-export interface Course {
-  id: string;
-  school: { name: string; address: string };
-  category: { name: string };
-  start_date: string;
-  price: string;
-}
-
-interface Meta {
-  current_page: number;
-  total: number;
-  per_page: number;
-}
+import { Course, Meta } from './types';
 
 export async function fetchCourses(
   page: string | undefined,
   sort: string | undefined,
+  category: string | undefined,
   city: string | undefined,
   name: string | undefined,
 ): Promise<{ data: Course[]; meta: Meta }> {
@@ -27,6 +15,11 @@ export async function fetchCourses(
   }
   if (sort) {
     url += url.includes('?') ? `&sort=${sort}` : `?sort=${sort}`;
+  }
+  if (category) {
+    url += url.includes('?')
+      ? `&filter[category.name]=${category}`
+      : `?filter[category.name]=${category}`;
   }
   if (city) {
     url += url.includes('?')
