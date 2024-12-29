@@ -2,7 +2,7 @@ import SideMenu from '@/components/SideMenu';
 import { ReactNode } from 'react';
 import { ToastContainer } from 'react-toastify';
 
-export default function ProfilePageLayout({
+export default function DashboardLayout({
   children,
 }: Readonly<{
   children: ReactNode;
