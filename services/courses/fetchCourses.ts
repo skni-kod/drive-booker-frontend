@@ -1,4 +1,4 @@
-import axiosInstance from '@/lib/axiosInstance';
+import { axiosInstance } from '@/lib/axiosInstance';
 import { Course, Meta } from './types';
 
 export async function fetchCourses(

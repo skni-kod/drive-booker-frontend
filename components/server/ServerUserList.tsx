@@ -1,15 +1,13 @@
-import { axiosServerInstance } from '@/lib/axiosInstance';
-import { getTokenFromSession } from '@/utils/authToken';
+import { axiosInstance } from '@/lib/axiosInstance';
 
 export default async function ServerUserlist() {
   try {
-    const accessToken = await getTokenFromSession();
-
-    const response = await axiosServerInstance(accessToken).get('/api/user');
+    const response = await axiosInstance.get('/api/user');
     const userData = response.data;
 
     return (
-      <div>
+      <div className='bg-green-100'>
+        Server side rendering GET /api/users
         <pre>{JSON.stringify(userData, null, 2)}</pre>
       </div>
     );
