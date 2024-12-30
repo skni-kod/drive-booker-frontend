@@ -10,7 +10,7 @@ export default function LoginLayout({
       <div className='flex w-full items-center justify-center lg:w-1/2'>
         {children}
       </div>
-      <div className="hidden bg-[length:auto_1080px] md:block md:h-full md:w-1/2 md:bg-[url('/images/login-background.svg')] md:bg-contain md:bg-right md:bg-repeat-y" />
+      <div className="hidden bg-[length:auto_1080px] sm:block sm:h-full sm:w-1/2 sm:bg-[url('/images/login-background.svg')] sm:bg-contain sm:bg-right sm:bg-repeat-y" />
     </div>
   );
 }

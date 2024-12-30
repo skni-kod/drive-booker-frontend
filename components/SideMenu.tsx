@@ -1,16 +1,14 @@
 'use client';
 
+import { logout } from '@/actions/logout';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
-import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 const SideMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data: session } = useSession();
-  const userID = session?.user.user.id;
   const pathname = usePathname();
 
   const isActive = (path: string) => path === pathname;
@@ -62,9 +60,9 @@ const SideMenu = () => {
                 </li>
                 <li className='flex items-center'>
                   <div className='h-6 w-6 bg-muted-foreground'></div>
-                  <Link href={`/dashboard/user/${userID}`}>
+                  <Link href={`/dashboard/profile`}>
                     <span
-                      className={`ml-3 text-sm sm:text-base md:text-lg xl:text-xl ${isActive(`/dashboard/user/${userID}`) ? 'font-bold' : 'font-normal'}`}
+                      className={`ml-3 text-sm sm:text-base md:text-lg xl:text-xl ${isActive(`/dashboard/profile`) ? 'font-bold' : 'font-normal'}`}
                     >
                       Mój profil
                     </span>
@@ -78,10 +76,7 @@ const SideMenu = () => {
             <h1>BANER REKLAMOWY</h1>
           </div>
           <div className='mb-10'>
-            <Button
-              className='text-sm font-bold'
-              onClick={() => signOut({ callbackUrl: '/', redirect: true })}
-            >
+            <Button className='text-sm font-bold' onClick={logout}>
               LOGOUT
             </Button>
           </div>
