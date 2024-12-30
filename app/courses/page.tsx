@@ -2,8 +2,8 @@ import { Suspense } from 'react';
 import { fetchCourses } from '../../services/courses/fetchCourses';
 import { fetchLocations } from '../../services/courses/fetchLocations';
 import { CoursesList } from './_components/CoursesList';
-import { SortingFilteringToolbar } from './_components/SortingFilteringToolbar';
 import { PaginationWithLinks } from './_components/PaginationComponent';
+import { SortingFilteringToolbar } from './_components/SortingFilteringToolbar';
 
 interface SearchParams {
   page?: string;
@@ -16,7 +16,7 @@ interface SearchParams {
 export default async function CoursePage({
   searchParams,
 }: {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams>;
 }) {
   try {
     const pageParams = await searchParams;
