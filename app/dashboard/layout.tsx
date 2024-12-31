@@ -1,20 +1,20 @@
-'use client';
-
-import { logout } from '@/actions/logout';
-import { Button } from '@/components/ui/button';
+import SideMenu from '@/components/SideMenu';
 import { ReactNode } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
   return (
-    <div className='flex h-screen flex-col'>
-      <Button onClick={logout} className='ml-auto w-1/4'>
-        LOGOUT
-      </Button>
-      <div>{children}</div>
+    <div className='flex h-screen'>
+      {/* SIDE MENU */}
+      <SideMenu />
+      {/* CONTENT */}
+      <div className='flex-1 overflow-auto px-4 pt-10 md:px-10'>{children}</div>
+      <ToastContainer />
     </div>
   );
 }

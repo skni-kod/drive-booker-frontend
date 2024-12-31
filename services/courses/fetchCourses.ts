@@ -7,7 +7,7 @@ export async function fetchCourses(
   category: string | undefined,
   city: string | undefined,
   name: string | undefined,
-): Promise<{ data: Course[]; meta: Meta }> {
+) {
   let url = '/api/courses';
 
   if (page) {
@@ -33,6 +33,6 @@ export async function fetchCourses(
   }
 
   console.log(url);
-  const response = await axiosInstance.get(url);
+  const response = await axiosInstance.get<{ data: Course[]; meta: Meta }>(url);
   return response.data;
 }
