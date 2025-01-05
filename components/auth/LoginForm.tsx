@@ -13,7 +13,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z, ZodType } from 'zod';
-import googleIcon from './googleIcon.svg';
 
 type TLoginForm = {
   email: string;
@@ -122,7 +121,12 @@ export default function LoginForm() {
 
       <Button className='px-10 py-5' onClick={handleGoogleSignIn}>
         <span className='flex items-center justify-center space-x-3'>
-          <Image src={googleIcon} alt='googleIcon' className='h-5 w-5'></Image>
+          <Image
+            src={'/assets/icons/googleIcon.svg'}
+            width={20}
+            height={20}
+            alt='GoogleIcon'
+          ></Image>
           <span className='font-bold'>Google</span>
         </span>
       </Button>

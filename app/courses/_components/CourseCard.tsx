@@ -2,8 +2,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
-import calendar from '../_assets/calendar.svg';
-import tags from '../_assets/tags.svg';
 
 interface CourseCardProps {
   name: string;
@@ -37,12 +35,24 @@ export default function CourseCard({
           <div className='mb-2 w-full border-t border-gray-200'></div>
           <div className='flex justify-between text-lg'>
             <div className='flex flex-row'>
-              <Image src={calendar} alt='calendar' className='h-6 w-6 pr-1' />
+              <Image
+                src='/assets/icons/calendar.svg'
+                width={20}
+                height={20}
+                alt='calendar'
+                className='pr-1'
+              />
               <span className='text-green-600'>{date}</span>
             </div>
             <div>
               <div className='flex flex-row'>
-                <Image src={tags} alt='calendar' className='h-6 w-6 pr-1' />
+                <Image
+                  src='/assets/icons/tags.svg'
+                  width={20}
+                  height={20}
+                  alt='calendar'
+                  className='pr-1'
+                />
                 <span className='text-green-600'>{price}</span>
               </div>
             </div>
