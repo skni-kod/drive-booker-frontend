@@ -1,8 +1,8 @@
+import { SessionData, sessionOptions } from '@/lib/session';
 import { getIronSession } from 'iron-session';
 import { cookies } from 'next/headers';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { SessionData, sessionOptions } from './lib/session';
 
 const protectedRoutes = ['/dashboard'];
 

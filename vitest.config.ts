@@ -5,12 +5,12 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './'),
+      '@': path.resolve(__dirname, './src/'),
     },
   },
   test: {
     globals: true,
-    setupFiles: './tests/setupTests.ts',
+    setupFiles: 'src/lib/tests/setupTests.ts',
     environment: 'jsdom',
   },
 });
