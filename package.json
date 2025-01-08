@@ -11,7 +11,7 @@
     "test": "vitest",
     "lint": "next lint",
     "prettier": "prettier --write .",
-    "prepare": "husky && husky install"
+    "prepare": "husky"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
