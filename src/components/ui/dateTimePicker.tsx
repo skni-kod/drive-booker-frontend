@@ -23,7 +23,13 @@ type DateTimePickerProps = {
 
 export function DateTimePicker({ value, onChange }: DateTimePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [time, setTime] = useState<string>('12:00');
+
+  const initialTime = `${value.getHours().toString().padStart(2, '0')}:${value
+    .getMinutes()
+    .toString()
+    .padStart(2, '0')}`;
+
+  const [time, setTime] = useState<string>(initialTime);
   const [date, setDate] = useState<Date>(value);
 
   return (
@@ -49,7 +55,6 @@ export function DateTimePicker({ value, onChange }: DateTimePickerProps) {
             setDate(selectedDate);
             onChange(selectedDate);
           }}
-          onDayClick={() => setIsOpen(false)}
           fromYear={2000}
           toYear={new Date().getFullYear()}
           disabled={(date) =>
@@ -59,6 +64,7 @@ export function DateTimePicker({ value, onChange }: DateTimePickerProps) {
         />
         <Select
           defaultValue={time}
+          open={isOpen}
           onValueChange={(e) => {
             setTime(e);
             if (date) {
