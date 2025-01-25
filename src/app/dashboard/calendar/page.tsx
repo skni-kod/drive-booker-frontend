@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getQueryClient } from '@/lib/getQueryClient';
 import { eventsQueryOptions } from '@/services/events/fetchEvents';
@@ -14,18 +15,21 @@ export default async function CalendarPage() {
 
   return (
     <main className='container'>
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <AddEventDialog />
-        <Suspense
-          fallback={
-            <div className='space-y-4'>
-              <Skeleton className='h-[700px] w-full' />
-            </div>
-          }
-        >
+      <Suspense
+        fallback={
+          <div className='space-y-4'>
+            <Button variant='outline' className='mt-4'>
+              Dodaj wydarzenie
+            </Button>
+            <Skeleton className='h-[700px] w-full' />
+          </div>
+        }
+      >
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <AddEventDialog />
           <BigCalendar />
-        </Suspense>
-      </HydrationBoundary>
+        </HydrationBoundary>
+      </Suspense>
     </main>
   );
 }

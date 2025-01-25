@@ -1,48 +1,78 @@
 'use client';
-
 import { Button } from '@/components/ui/button';
 import { DateTimePicker } from '@/components/ui/dateTimePicker';
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { getQueryClient } from '@/lib/getQueryClient';
-import { sendEvent } from '@/services/events/sendEvent';
+import { deleteEvent } from '@/services/events/deleteEvent';
 import { Event } from '@/services/events/types';
+import { updateEvent } from '@/services/events/updateEvent';
 import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-export default function AddEventDialog() {
-  const [open, setOpen] = useState(false);
+interface SelectEventDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  event: Event;
+}
+
+export const SelectEventDialog: React.FC<SelectEventDialogProps> = ({
+  open,
+  onOpenChange,
+  event,
+}) => {
   const queryClient = getQueryClient();
   const methods = useForm({
     defaultValues: {
-      title: '',
-      start: new Date(),
-      end: new Date(),
+      title: event.title,
+      start: event.start,
+      end: event.end,
+    },
+  });
+
+  useEffect(() => {
+    if (event) {
+      methods.reset({
+        title: event.title,
+        start: new Date(event.start),
+        end: new Date(event.end),
+      });
+    }
+  }, [event, methods]);
+
+  const { mutate: mutateDeleteEvent } = useMutation({
+    mutationFn: deleteEvent,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['events'] });
+      toast.success('Wydarzenie zostało usunięte');
+      onOpenChange(false);
+    },
+    onError: (error: Error) => {
+      console.error('Error deleting event:', error);
+      toast.error('Wystąpił błąd podczas usuwania wydarzenia');
     },
   });
 
   const { mutate } = useMutation<void, Error, Event>({
-    mutationFn: sendEvent,
+    mutationFn: updateEvent,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['events'] });
-      toast.success('Wydarzenie zostało dodane');
-      setOpen(false);
+      toast.success('Wydarzenie zostało zaktualizowane');
+      onOpenChange(false);
       methods.reset();
     },
     onError: (error: Error) => {
-      console.error('Error creating event:', error);
+      console.error('Error updating event:', error);
       toast.error('wystąpił błąd');
     },
   });
@@ -53,25 +83,22 @@ export default function AddEventDialog() {
       toast.info('Please fill in all fields');
       return;
     }
+    console.log(start);
+    console.log(end);
     mutate({
+      id: event.id,
       title,
       start: start,
       end: end,
     });
   };
-
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant='outline' className='mt-4'>
-          Dodaj wydarzenie
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
-          <DialogTitle>Dodaj nowe wydarzenie</DialogTitle>
+          <DialogTitle>{event.title}</DialogTitle>
           <DialogDescription>
-            Wprowadź szczegóły wydarzenia. Zapisz zmiany gdy skończysz.
+            Edytuj lub usuń wydarzenie. Zapisz zmiany gdy skończysz.
           </DialogDescription>
         </DialogHeader>
         <FormProvider {...methods}>
@@ -93,7 +120,7 @@ export default function AddEventDialog() {
                 </Label>
                 <div className='col-span-3'>
                   <DateTimePicker
-                    value={methods.watch('start')}
+                    value={new Date(methods.watch('start'))}
                     onChange={(date) => methods.setValue('start', date)}
                   />
                 </div>
@@ -104,18 +131,22 @@ export default function AddEventDialog() {
                 </Label>
                 <div className='col-span-3'>
                   <DateTimePicker
-                    value={methods.watch('end') ?? null}
+                    value={methods.watch('end')}
                     onChange={(date) => methods.setValue('end', date)}
                   />
                 </div>
               </div>
             </div>
             <DialogFooter>
-              <DialogClose asChild>
-                <Button type='button' variant='secondary'>
-                  Anuluj
-                </Button>
-              </DialogClose>
+              <Button
+                type='button'
+                variant='destructive'
+                onClick={() => {
+                  mutateDeleteEvent(event);
+                }}
+              >
+                Usuń wydarzenie
+              </Button>
               <Button type='submit'>Zapisz wydarzenia</Button>
             </DialogFooter>
           </form>
@@ -123,4 +154,4 @@ export default function AddEventDialog() {
       </DialogContent>
     </Dialog>
   );
-}
+};
