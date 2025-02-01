@@ -3,6 +3,7 @@ import { SessionOptions } from 'iron-session';
 export interface SessionData {
   access_token: string;
   isLoggedIn: boolean;
+  role: string[];
 }
 
 export const sessionOptions: SessionOptions = {

@@ -8,10 +8,13 @@ export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
 
+    //add types here
     const loginResponse = await axiosInstance.post(
       `${process.env.NEXT_PUBLIC_API_URL}/api/login`,
       { email: email, password: password },
     );
+
+    console.log(loginResponse);
 
     if (loginResponse.status === 200) {
       const session = await getIronSession<SessionData>(
@@ -21,6 +24,7 @@ export async function POST(request: Request) {
 
       session.access_token = loginResponse.data.access_token;
       session.isLoggedIn = true;
+      session.role = loginResponse.data.user.roles;
       await session.save();
 
       return new Response('Success!', { status: 200 });
