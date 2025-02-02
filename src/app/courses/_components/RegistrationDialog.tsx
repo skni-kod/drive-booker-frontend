@@ -14,6 +14,8 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
+import { CourseRegistrationSchema } from '@/validators/courseRegistration';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 interface FormValues {
@@ -28,7 +30,9 @@ export default function RegistrationDialog() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>();
+  } = useForm<FormValues>({
+    resolver: zodResolver(CourseRegistrationSchema),
+  });
 
   const onSubmit = (data: FormValues) => {
     console.log(data);
@@ -54,11 +58,17 @@ export default function RegistrationDialog() {
         >
           <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
             <div className='space-y-5'>
-              <FormField id='name' label='Imię' register={register}></FormField>
+              <FormField
+                id='name'
+                label='Imię'
+                register={register}
+                error={errors.name?.message}
+              ></FormField>
               <FormField
                 id='email'
                 label='Adres e-mail'
                 register={register}
+                error={errors.email?.message}
               ></FormField>
             </div>
             <div className='space-y-5'>
@@ -66,11 +76,13 @@ export default function RegistrationDialog() {
                 id='last_name'
                 label='Nazwisko'
                 register={register}
+                error={errors.last_name?.message}
               ></FormField>
               <FormField
                 id='phone'
                 label='Numer telefonu'
                 register={register}
+                error={errors.phone?.message}
               ></FormField>
             </div>
           </div>
