@@ -4,12 +4,23 @@ import axios from 'axios';
 import { getIronSession } from 'iron-session';
 import { cookies } from 'next/headers';
 
+interface LoginResponse {
+  success: boolean;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    roles: string[];
+  };
+  access_token: string;
+  message: string;
+}
+
 export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
 
-    //add types here
-    const loginResponse = await axiosInstance.post(
+    const loginResponse = await axiosInstance.post<LoginResponse>(
       `${process.env.NEXT_PUBLIC_API_URL}/api/login`,
       { email: email, password: password },
     );
