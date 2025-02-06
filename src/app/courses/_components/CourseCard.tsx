@@ -82,7 +82,7 @@ export default function CourseCard({
               <Button variant='outline' size='sm' asChild>
                 <Link href={`/courses/${id}`}>SZCZEGÓŁY</Link>
               </Button>
-              <RegistrationDialog />
+              <RegistrationDialog courseID={id} />
             </div>
           </div>
         </div>
