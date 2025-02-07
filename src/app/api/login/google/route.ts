@@ -6,6 +6,7 @@ import { cookies } from 'next/headers';
 export async function GET() {
   try {
     const authToken = (await cookies()).get('auth_token')?.value;
+    const role = (await cookies()).get('roles')?.value;
 
     if (!authToken) {
       return new Response('No auth token found', { status: 401 });
@@ -22,6 +23,7 @@ export async function GET() {
 
     session.access_token = authToken;
     session.isLoggedIn = true;
+    session.role = role ? JSON.parse(role) : [];
     await session.save();
 
     return Response.redirect(
