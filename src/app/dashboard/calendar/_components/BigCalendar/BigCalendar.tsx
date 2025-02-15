@@ -1,6 +1,6 @@
 'use client';
 import { messages } from '@/constants/calendar';
-import { eventsQueryOptions } from '@/services/events/fetchEvents';
+import { getEventsQueryOptions } from '@/services/events/fetchEvents';
 import { Event } from '@/services/events/types';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import moment from 'moment';
@@ -10,7 +10,8 @@ import { Calendar, momentLocalizer, View, Views } from 'react-big-calendar';
 import './bigCalendarStyling.css';
 import { SelectEventDialog } from './SelectEventDialog';
 
-const BigCalendar = () => {
+const BigCalendar = ({ endpoint }: { endpoint: string }) => {
+  const eventsQueryOptions = getEventsQueryOptions(endpoint);
   const { data: events } = useSuspenseQuery(eventsQueryOptions);
   const [view, setView] = useState<View>(Views.WEEK);
   const [date, setDate] = useState(new Date());

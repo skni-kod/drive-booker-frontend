@@ -2,9 +2,11 @@ import { axiosInstance } from '@/lib/axiosInstance';
 import { queryOptions } from '@tanstack/react-query';
 import { Event } from './types';
 
-export async function fetchEvents() {
+export async function fetchEvents(endpoint: string) {
   try {
-    const response = await axiosInstance.get<{ data: Event[] }>('/api/events');
+    const response = await axiosInstance.get<{ data: Event[] }>(
+      `/api/${endpoint}/events`,
+    );
     const events = response.data.data || [];
     return events.map((event) => ({
       ...event,
@@ -17,7 +19,8 @@ export async function fetchEvents() {
   }
 }
 
-export const eventsQueryOptions = queryOptions({
-  queryKey: ['events'],
-  queryFn: fetchEvents,
-});
+export const getEventsQueryOptions = (endpoint: string) =>
+  queryOptions({
+    queryKey: ['events'],
+    queryFn: () => fetchEvents(endpoint),
+  });
