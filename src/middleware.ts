@@ -5,6 +5,7 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
 const protectedRoutes = ['/dashboard'];
+// const adminRoutes = ['/adminpanel'];
 
 export default async function middleware(req: NextRequest) {
   const session = await getIronSession<SessionData>(
@@ -30,6 +31,13 @@ export default async function middleware(req: NextRequest) {
     const dashboardUrl = new URL('/dashboard', req.nextUrl.origin);
     return NextResponse.redirect(dashboardUrl.toString());
   }
+
+  // if (
+  //   adminRoutes.some((route) => requestPath.startsWith(route)) &&
+  //   !session.role?.includes('owner')
+  // ) {
+  //   return NextResponse.redirect('/dashboard');
+  // }
 
   return NextResponse.next();
 }

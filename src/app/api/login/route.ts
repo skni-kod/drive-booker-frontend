@@ -4,14 +4,28 @@ import axios from 'axios';
 import { getIronSession } from 'iron-session';
 import { cookies } from 'next/headers';
 
+interface LoginResponse {
+  success: boolean;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    roles: string[];
+  };
+  access_token: string;
+  message: string;
+}
+
 export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
 
-    const loginResponse = await axiosInstance.post(
+    const loginResponse = await axiosInstance.post<LoginResponse>(
       `${process.env.NEXT_PUBLIC_API_URL}/api/login`,
       { email: email, password: password },
     );
+
+    console.log(loginResponse);
 
     if (loginResponse.status === 200) {
       const session = await getIronSession<SessionData>(
@@ -21,6 +35,7 @@ export async function POST(request: Request) {
 
       session.access_token = loginResponse.data.access_token;
       session.isLoggedIn = true;
+      session.role = loginResponse.data.user.roles;
       await session.save();
 
       return new Response('Success!', { status: 200 });
