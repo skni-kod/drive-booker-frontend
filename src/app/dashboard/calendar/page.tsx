@@ -2,6 +2,7 @@ import { checkUserRole } from '@/actions/checkUserRole';
 import { RoleGuard } from '@/components/shared/RoleGuard';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getQueryClient } from '@/lib/getQueryClient';
+import { fetchDrivers } from '@/services/events/fetchDrivers';
 import { getEventsQueryOptions } from '@/services/events/fetchEvents';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import { Suspense } from 'react';
@@ -18,6 +19,8 @@ export default async function CalendarPage() {
   // Prefetch the events on the server side
   await queryClient.prefetchQuery(getEventsQueryOptions(endpoint));
 
+  const drivers = await fetchDrivers();
+
   return (
     <main className='container'>
       <Suspense
@@ -30,7 +33,7 @@ export default async function CalendarPage() {
       >
         <HydrationBoundary state={dehydrate(queryClient)}>
           <RoleGuard allowedRoles={['instructor']}>
-            <AddEventDialog />
+            <AddEventDialog drivers={drivers} />
           </RoleGuard>
           <BigCalendar endpoint={endpoint} />
         </HydrationBoundary>

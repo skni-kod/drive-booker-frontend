@@ -3,7 +3,7 @@ import { Event } from './types';
 
 export async function updateEvent(event: Event): Promise<void> {
   try {
-    return axiosInstance.put(`/api/events/${event.id}`, {
+    return axiosInstance.put(`/api/instructor/events/${event.id}`, {
       title: event.title,
       start: event.start,
       end: event.end,

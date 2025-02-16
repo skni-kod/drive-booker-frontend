@@ -14,20 +14,28 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { getQueryClient } from '@/lib/getQueryClient';
 import { sendEvent } from '@/services/events/sendEvent';
-import { Event } from '@/services/events/types';
+import { Driver, Event } from '@/services/events/types';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-export default function AddEventDialog() {
+export default function AddEventDialog({ drivers }: { drivers: Driver[] }) {
   const [open, setOpen] = useState(false);
   const queryClient = getQueryClient();
   const methods = useForm({
     defaultValues: {
       title: '',
+      driverId: '',
       start: new Date(),
       end: new Date(),
     },
@@ -48,17 +56,20 @@ export default function AddEventDialog() {
   });
 
   const onSubmit = (data: Event) => {
-    const { title, start, end } = data;
-    if (!title || !start || !end) {
+    const { title, driverId, start, end } = data;
+    if (!title || !driverId || !start || !end) {
       toast.info('Please fill in all fields');
       return;
     }
     mutate({
       title,
+      driverId,
       start: start,
       end: end,
     });
   };
+
+  const selectedDriver = methods.watch('driverId');
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -86,6 +97,39 @@ export default function AddEventDialog() {
                   {...methods.register('title')}
                   className='col-span-3'
                 />
+              </div>
+              <div className='grid grid-cols-4 items-center gap-4'>
+                <Label htmlFor='driver' className='text-right'>
+                  Kursant
+                </Label>
+                <div className='col-span-3'>
+                  <Select
+                    value={selectedDriver}
+                    onValueChange={(value: string) =>
+                      methods.setValue('driverId', value)
+                    }
+                  >
+                    <SelectTrigger className='w-full'>
+                      <SelectValue placeholder='Wybierz kursanta' />
+                    </SelectTrigger>
+                    <SelectContent className='fixed left-0 top-2 z-[9999] border-none shadow-none'>
+                      {drivers.length > 0 ? (
+                        drivers.map((driver) => (
+                          <SelectItem
+                            key={driver.id}
+                            value={driver.id.toString()}
+                          >
+                            {driver.name}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem disabled value={'clear'}>
+                          Brak kursantów
+                        </SelectItem>
+                      )}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
               <div className='grid grid-cols-4 items-center gap-4'>
                 <Label htmlFor='start-date' className='text-right'>
