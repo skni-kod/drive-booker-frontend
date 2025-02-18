@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { axiosInstance } from '@/lib/axiosInstance';
 import Link from 'next/link';
-import { ToastContainer } from 'react-toastify';
 import CourseRegistrationForm from '../_components/CourseRegistrationForm';
 import SingleCourseCard from './_components/SingleCourseCard';
 
@@ -64,7 +63,6 @@ export default async function CourseDetailsPage({
             buttonSize={'lg'}
           />
         </div>
-        <ToastContainer />
       </main>
     );
   } catch (error) {

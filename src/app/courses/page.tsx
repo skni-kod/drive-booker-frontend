@@ -4,7 +4,6 @@ import { Suspense } from 'react';
 import { CoursesList } from './_components/CoursesList';
 import { PaginationWithLinks } from './_components/PaginationComponent';
 import { SortingFilteringToolbar } from './_components/SortingFilteringToolbar';
-import { ToastContainer } from 'react-toastify';
 
 interface SearchParams {
   page?: string;
@@ -46,7 +45,6 @@ export default async function CoursePage({
             />
           )}
         </Suspense>
-        <ToastContainer />
       </main>
     );
   } catch (error) {
