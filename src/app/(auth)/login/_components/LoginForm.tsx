@@ -1,5 +1,6 @@
 'use client';
 
+import { getSession } from '@/actions/getSession';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
@@ -33,8 +34,6 @@ export default function LoginForm() {
     formState: { errors },
   } = useForm<TLoginForm>({ resolver: zodResolver(schema) });
 
-  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
-
   const handleFormSubmit = async (data: TLoginForm) => {
     try {
       setSubmitError(null);
@@ -42,7 +41,17 @@ export default function LoginForm() {
       const response = await axios.post(ApiRoutes.Login, data);
       console.log(response);
       if (response.status === 200) {
-        router.push(callbackUrl);
+        const session = await getSession();
+        console.log('SESJA', session);
+        if (session) {
+          const redirectPath = session.role.includes('owner')
+            ? '/adminpanel'
+            : '/dashboard';
+          router.push(redirectPath);
+        } else {
+          console.error('Session is undefined');
+          setSubmitError('Something went wrong. Please try again.');
+        }
       }
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
