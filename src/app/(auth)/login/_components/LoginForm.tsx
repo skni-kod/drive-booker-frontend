@@ -1,6 +1,5 @@
 'use client';
 
-import { getSession } from '@/actions/getSession';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
@@ -10,7 +9,7 @@ import { axiosInstance } from '@/lib/axiosInstance';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios, { AxiosError } from 'axios';
 import Image from 'next/image';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z, ZodType } from 'zod';
@@ -26,7 +25,6 @@ const schema: ZodType<TLoginForm> = z.object({
 
 export default function LoginForm() {
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const searchParams = useSearchParams();
   const router = useRouter();
   const {
     register,
@@ -41,17 +39,10 @@ export default function LoginForm() {
       const response = await axios.post(ApiRoutes.Login, data);
       console.log(response);
       if (response.status === 200) {
-        const session = await getSession();
-        console.log('SESJA', session);
-        if (session) {
-          const redirectPath = session.role.includes('owner')
-            ? '/adminpanel'
-            : '/dashboard';
-          router.push(redirectPath);
-        } else {
-          console.error('Session is undefined');
-          setSubmitError('Something went wrong. Please try again.');
-        }
+        fetchSession();
+      } else {
+        console.error('Session is undefined');
+        setSubmitError('Something went wrong. Please try again.');
       }
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
@@ -60,6 +51,25 @@ export default function LoginForm() {
         axiosError.response?.data?.message ||
           'Something went wrong. Please try again.',
       );
+    }
+  };
+
+  // Pobiera dane sesji z serwera, jesli uzytkownik jest zalogowany, przekieroqwywuje go do odpowiedniego panelu
+  const fetchSession = async () => {
+    try {
+      const response = await fetch('/api/session');
+      const sessionData = await response.json();
+
+      if (sessionData.isLoggedIn) {
+        const redirectPath = sessionData.role.includes('owner')
+          ? '/adminpanel'
+          : '/dashboard';
+        router.push(redirectPath);
+      } else {
+        console.error('User is not logged in');
+      }
+    } catch (error) {
+      console.error('Failed to fetch session:', error);
     }
   };
 
