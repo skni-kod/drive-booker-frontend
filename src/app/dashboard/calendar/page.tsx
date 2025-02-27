@@ -15,11 +15,10 @@ export default async function CalendarPage() {
   // Determine role from session
   const { hasRole } = await checkUserRole();
   const endpoint = hasRole(['instructor']) ? 'instructor' : 'driver';
+  const drivers = hasRole(['instructor']) ? await fetchDrivers() : [];
 
   // Prefetch the events on the server side
   await queryClient.prefetchQuery(getEventsQueryOptions(endpoint));
-
-  const drivers = await fetchDrivers();
 
   return (
     <main className='container'>
