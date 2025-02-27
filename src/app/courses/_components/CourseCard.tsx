@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
+import RegistrationDialog from './RegistrationDialog';
 
 interface CourseCardProps {
   name: string;
@@ -81,7 +82,7 @@ export default function CourseCard({
               <Button variant='outline' size='sm' asChild>
                 <Link href={`/courses/${id}`}>SZCZEGÓŁY</Link>
               </Button>
-              <Button size='sm'>ZAPISZ SIĘ</Button>
+              <RegistrationDialog courseID={id} />
             </div>
           </div>
         </div>
