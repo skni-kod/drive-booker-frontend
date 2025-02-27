@@ -48,9 +48,13 @@ const SideMenu = () => {
                 </li>
                 <li className='flex items-center'>
                   <div className='h-6 w-6 bg-muted-foreground'></div>
-                  <span className='ml-3 text-sm sm:text-base md:text-lg xl:text-xl'>
-                    Kalendarz
-                  </span>
+                  <Link href={`/dashboard/calendar`}>
+                    <span
+                      className={`ml-3 text-sm sm:text-base md:text-lg xl:text-xl ${isActive(`/dashboard/calendar`) ? 'font-bold' : 'font-normal'}`}
+                    >
+                      Kalendarz
+                    </span>
+                  </Link>
                 </li>
                 <li className='flex items-center'>
                   <div className='h-6 w-6 bg-muted-foreground'></div>
