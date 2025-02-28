@@ -1,18 +1,20 @@
-import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
 } from '@/components/ui/card';
+import RegistrationDialog from '../../_components/RegistrationDialog';
 
 interface SingleCourseCardProps {
+  id: string;
   date: string;
   category: string;
   price: string;
 }
 
 export default function SingleCourseCard({
+  id,
   date,
   category,
   price,
@@ -37,9 +39,11 @@ export default function SingleCourseCard({
         </div>
       </CardContent>
       <CardFooter>
-        <Button className='w-full bg-black hover:bg-black/90' size='lg'>
-          ZAPISZ SIĘ
-        </Button>
+        <RegistrationDialog
+          courseID={id}
+          buttonClassName='w-full bg-black hover:bg-black/90'
+          buttonSize='lg'
+        />
       </CardFooter>
     </Card>
   );

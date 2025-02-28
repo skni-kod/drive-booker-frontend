@@ -1,9 +1,7 @@
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { axiosInstance } from '@/lib/axiosInstance';
 import Link from 'next/link';
+import CourseRegistrationForm from '../_components/CourseRegistrationForm';
 import SingleCourseCard from './_components/SingleCourseCard';
 
 export default async function CourseDetailsPage({
@@ -44,6 +42,7 @@ export default async function CourseDetailsPage({
             </h2>
           </div>
           <SingleCourseCard
+            id={course.id}
             date={course.start_date}
             category={'X'}
             price={course.price}
@@ -58,35 +57,11 @@ export default async function CourseDetailsPage({
             godzin skontaktujemy się z Tobą, w celu potwierdzenia Twojego
             zgłoszenia się na kurs oraz poinformujemy o najbliższych zajęciach!
           </h2>
-          <div className='flex flex-row gap-2'>
-            <Input placeholder='Imię' />
-            <Input placeholder='Nazwisko' />
-          </div>
-          <div className='flex flex-row gap-2'>
-            <Input placeholder='Adres e-mail' />
-            <Input placeholder='Numer telefonu' />
-          </div>
-          <div className='flex flex-row gap-2'>
-            <Checkbox id='agreement' />
-            <Label htmlFor='agreement' className='text-xs'>
-              Wyrażam zgodę na przetwarzenie moich danych przez Ośrodek
-              Szkolenia Kierowców “Nazwa szkoły” w następujących celach:
-              nawiązania kontaktu podczas realizacji kursu / szkolenia /
-              kwalifikacji; zapisu na egzamin państwowy do wybranego
-              Wojewódzkiego Ośrodka Ruchu Drogowego; zapisu na jazdy w warunkach
-              specjalnych; wyrobieniu Profilu Kandydata na Kierowcą w wybranym
-              Wydziale Komunikacji; zapisu na jazdy próbne przed egzaminem
-              państwowym w wybranym Wojewódzkim Ośrodku Ruchu Drogowego;
-              zgłoszenia do ubezpieczenia wynikającego ze skierowania na
-              szkolenie oraz innych wynikających z prawidłowego wykonania
-              usługi. Dane osobowe podaję dobrowolnie i oświadczam, że są one
-              zgodne z prawdą. Zapoznałem/am się z treścią klauzuli
-              informacyjnej, w tym z informacją o celu i sposobach przetwarzania
-              danych osobowych oraz prawie dostępu do treści swoich danych i
-              prawie ich poprawiania.
-            </Label>
-          </div>
-          <Button className='w-full sm:w-2/5'>ZAPISUJĘ SIĘ!</Button>
+          <CourseRegistrationForm
+            courseID={course.id}
+            buttonClassName='w-full sm:w-2/5 flex-start'
+            buttonSize={'lg'}
+          />
         </div>
       </main>
     );
