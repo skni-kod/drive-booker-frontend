@@ -1,8 +1,8 @@
 import { fetchCourses } from '@/services/courses/fetchCourses';
 import { fetchLocations } from '@/services/courses/fetchLocations';
 import { Suspense } from 'react';
+import { PaginationWithLinks } from '../../components/shared/Pagination/PaginationComponent';
 import { CoursesList } from './_components/CoursesList';
-import { PaginationWithLinks } from './_components/PaginationComponent';
 import { SortingFilteringToolbar } from './_components/SortingFilteringToolbar';
 
 interface SearchParams {

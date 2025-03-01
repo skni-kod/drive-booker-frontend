@@ -17,3 +17,7 @@ export enum ApiRoutes {
   Login = '/api/login',
   Google = '/api/login/google',
 }
+
+export enum AdminPanelApiRoutes {
+  Drivers = '/api/admin/students',
+}
