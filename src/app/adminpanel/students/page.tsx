@@ -1,21 +1,38 @@
 'use client';
 
 import { PaginationWithLinks } from '@/components/shared/Pagination/PaginationComponent';
-import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { fetchDrivers } from '@/services/adminpanel/fetchDrivers';
 import { useQuery } from '@tanstack/react-query';
-import { Search } from 'lucide-react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+
+import { useEffect, useState } from 'react';
 
 export default function StudentsContent() {
   const searchParams = useSearchParams();
   const page = searchParams.get('page') || '1';
+  const searchQuery = searchParams.get('search') || '';
+  const router = useRouter();
+
+  const [search, setSearch] = useState(searchQuery);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['drivers', page],
-    queryFn: () => fetchDrivers(page),
+    queryKey: ['drivers', page, searchQuery],
+    queryFn: () => fetchDrivers(page, searchQuery),
     staleTime: 60 * 1000,
   });
+
+  // delay do wyszukiwania, zeby nie robic requestow zbyt czesto
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      const params = new URLSearchParams();
+      if (search) params.set('search', search);
+      params.set('page', '1');
+      router.push(`?${params.toString()}`);
+    }, 500);
+
+    return () => clearTimeout(delay);
+  }, [search, router]);
 
   const drivers = data?.data || [];
   const meta = data?.meta;
@@ -28,12 +45,11 @@ export default function StudentsContent() {
       <div className='mb-5 flex items-center justify-between'>
         <h2 className='text-xl'>Lista kursantów</h2>
         <div className='flex gap-4'>
-          <Button>
-            WYSZUKAJ{' '}
-            <span className='ml-2'>
-              <Search />
-            </span>
-          </Button>
+          <Input
+            placeholder='Wyszukaj kursantów'
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          ></Input>
         </div>
       </div>
       <div className='grid cursor-pointer grid-cols-2 gap-4'>

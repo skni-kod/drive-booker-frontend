@@ -3,12 +3,17 @@ import { axiosInstance } from '@/lib/axiosInstance';
 import { Meta } from '../courses/types';
 import { Driver } from './types';
 
-export async function fetchDrivers(page: string | undefined) {
+export async function fetchDrivers(
+  page: string | undefined,
+  search: string = '',
+) {
   let url: string = AdminPanelApiRoutes.Drivers;
 
-  if (page) {
-    url += `?page=${page}`;
-  }
+  const params = new URLSearchParams();
+  if (page) params.set('page', page);
+  if (search) params.set('search', search);
+
+  url += `?${params.toString()}`;
 
   const response = await axiosInstance.get<{ data: Driver[]; meta: Meta }>(url);
 
