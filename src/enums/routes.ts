@@ -20,4 +20,5 @@ export enum ApiRoutes {
 
 export enum AdminPanelApiRoutes {
   Drivers = '/api/admin/students',
+  Course_Registrations = '/api/admin/course_registrations',
 }

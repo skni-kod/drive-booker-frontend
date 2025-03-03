@@ -11,6 +11,7 @@ export const menuItems = {
     { label: 'Pracownicy', href: '/adminpanel/staff' },
     { label: 'Pojazdy', href: '/adminpanel/vehicles' },
     { label: 'Kursanci', href: '/adminpanel/students' },
+    { label: 'Zgloszenia', href: '/adminpanel/course-requests' },
     { label: 'Moja szkoła', href: '/adminpanel/school' },
   ],
   instructor: [],

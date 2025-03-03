@@ -11,3 +11,15 @@ export interface Driver {
   street: string;
   house_number: string;
 }
+
+export interface CourseRequests {
+  id: number;
+  course_id: number;
+  name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
