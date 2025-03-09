@@ -39,6 +39,10 @@ const BigCalendar = ({ endpoint }: { endpoint: string }) => {
       <Calendar
         localizer={localizer}
         events={events || []}
+        eventPropGetter={(event) => {
+          const backgroundColor = event.status === 'pending' ? '#999' : '#090';
+          return { style: { backgroundColor } };
+        }}
         style={{ height: 700, width: '100%' }}
         date={date}
         onNavigate={handleNavigate}
