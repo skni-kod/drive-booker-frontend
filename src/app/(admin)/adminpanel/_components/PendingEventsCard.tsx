@@ -8,54 +8,30 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { getPendingEvents } from '@/services/events/getPendingEvents';
+import { useEventStream } from '@/hooks/useEventStream';
 import { handleEventChange } from '@/services/events/handleEventStatus';
-import { adminEvent } from '@/services/events/types';
 import { Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ConfirmationDialog from './ConfirmationDialog';
 import { EventTable } from './EventTable';
 
 export default function PendingEventsCard() {
-  const [events, setEvents] = useState<adminEvent[]>([]);
+  const { events, error, isLoading } = useEventStream();
   const [searchQuery, setSearchQuery] = useState('');
   const [alertOpen, setAlertOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<{
     id: string;
     action: 'accept' | 'reject';
   } | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        setIsLoading(true);
-        const data = await getPendingEvents();
-        setEvents(data);
-        setError(null);
-      } catch (err) {
-        setError('Failed to load events');
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchEvents();
-  }, []);
 
   const handleStatusChange = async (
     id: string,
     action: 'accept' | 'reject',
   ) => {
     try {
-      handleEventChange(id, action);
-      const updatedEvents = await getPendingEvents();
-      setEvents(updatedEvents);
+      await handleEventChange(id, action);
     } catch (error) {
       console.error('Update error:', error);
-      setError('Failed to update event status');
     } finally {
       setAlertOpen(false);
       setSelectedEvent(null);
