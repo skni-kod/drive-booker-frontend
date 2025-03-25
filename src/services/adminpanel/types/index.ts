@@ -1,5 +1,5 @@
 export interface Driver {
-  id: number;
+  id: string;
   name: string;
   last_name: string;
   email: string;
@@ -10,10 +10,11 @@ export interface Driver {
   zip_code: string;
   street: string;
   house_number: string;
+  created_at: string;
 }
 
 export interface CourseRequests {
-  id: number;
+  id: string;
   course_id: number;
   name: string;
   last_name: string;

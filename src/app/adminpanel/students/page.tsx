@@ -5,8 +5,8 @@ import { Input } from '@/components/ui/input';
 import { fetchDrivers } from '@/services/adminpanel/fetchDrivers';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
-
 import { useEffect, useState } from 'react';
+import { DriversList } from './_components/DriversList';
 
 export default function StudentsContent() {
   const searchParams = useSearchParams();
@@ -22,7 +22,6 @@ export default function StudentsContent() {
     staleTime: 60 * 1000,
   });
 
-  // delay do wyszukiwania, zeby nie robic requestow zbyt czesto
   useEffect(() => {
     const delay = setTimeout(() => {
       const params = new URLSearchParams();
@@ -42,25 +41,24 @@ export default function StudentsContent() {
 
   return (
     <div>
-      <div className='mb-5 flex items-center justify-between'>
-        <h2 className='text-xl'>Lista kursantów</h2>
-        <div className='flex gap-4'>
+      <div className='mb-5 flex items-center'>
+        <h2 className='text-xl font-semibold'>Lista kursantów</h2>
+      </div>
+
+      <div className='flex w-full max-w-4xl flex-col'>
+        <div className='mb-5 flex justify-end'>
           <Input
+            className='w-full max-w-xs'
             placeholder='Wyszukaj kursantów'
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-          ></Input>
+          />
         </div>
-      </div>
-      <div className='grid cursor-pointer grid-cols-2 gap-4'>
-        {drivers.map((driver) => (
-          <div key={driver.id} className='rounded-lg bg-gray-300 p-4'>
-            {driver.name} {driver.last_name}
-          </div>
-        ))}
+
+        <DriversList drivers={drivers} />
 
         {drivers.length > 0 && meta && (
-          <div className='col-span-2 mt-4 flex justify-center'>
+          <div className='mt-8 flex justify-center'>
             <PaginationWithLinks
               page={meta.current_page}
               totalCount={meta.total}
