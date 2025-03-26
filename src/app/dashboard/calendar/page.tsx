@@ -14,11 +14,11 @@ export default async function CalendarPage() {
 
   // Determine role from session
   const { hasRole } = await checkUserRole();
-  const endpoint = hasRole(['instructor']) ? 'instructor' : 'driver';
+  const role = hasRole(['instructor']) ? 'instructor' : 'driver';
   const drivers = hasRole(['instructor']) ? await fetchDrivers() : [];
 
   // Prefetch the events on the server side
-  await queryClient.prefetchQuery(getEventsQueryOptions(endpoint));
+  await queryClient.prefetchQuery(getEventsQueryOptions(role));
 
   return (
     <main className='container'>
@@ -34,7 +34,7 @@ export default async function CalendarPage() {
           <RoleGuard allowedRoles={['instructor']}>
             <AddEventDialog drivers={drivers} />
           </RoleGuard>
-          <BigCalendar endpoint={endpoint} />
+          <BigCalendar role={role} />
         </HydrationBoundary>
       </Suspense>
     </main>

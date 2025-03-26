@@ -1,4 +1,6 @@
 'use client';
+
+import { PaginationWithLinks } from '@/components/shared/PaginationWithLinks';
 import { Badge } from '@/components/ui/badge';
 import {
   Card,
@@ -8,39 +10,36 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { useEventStream } from '@/hooks/useEventStream';
-import { handleEventChange } from '@/services/events/handleEventStatus';
+import { useDebounce } from '@/hooks/useDebounce';
+import { useEventStatusMutation } from '@/hooks/useEventStatusMutation';
+import { usePendingEvents } from '@/services/events/getPendingEvents';
 import { Search } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import ConfirmationDialog from './ConfirmationDialog';
 import { EventTable } from './EventTable';
 
 export default function PendingEventsCard() {
-  const { events, error, isLoading } = useEventStream();
+  const searchParams = useSearchParams();
+  const page = Number(searchParams.get('page')) || 1;
   const [searchQuery, setSearchQuery] = useState('');
   const [alertOpen, setAlertOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<{
     id: string;
     action: 'accept' | 'reject';
   } | null>(null);
+  const debouncedSearch = useDebounce(searchQuery, 300);
 
-  const handleStatusChange = async (
-    id: string,
-    action: 'accept' | 'reject',
-  ) => {
-    try {
-      await handleEventChange(id, action);
-    } catch (error) {
-      console.error('Update error:', error);
-    } finally {
-      setAlertOpen(false);
-      setSelectedEvent(null);
-    }
-  };
+  // Fetch events using react query
+  const { data: events, isLoading, error } = usePendingEvents(page);
 
-  const filteredEvents = events.filter((event) =>
-    event.title.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  // Mutation for changing event status
+  const { mutate } = useEventStatusMutation();
+
+  const filteredEvents =
+    events?.data.filter((event) =>
+      event.title.toLowerCase().includes(debouncedSearch.toLowerCase()),
+    ) || [];
 
   return (
     <div className='container mx-auto max-w-6xl py-6'>
@@ -54,7 +53,7 @@ export default function PendingEventsCard() {
               </CardDescription>
             </div>
             {isLoading && <Badge variant='secondary'>Loading...</Badge>}
-            {error && <Badge variant='destructive'>{error}</Badge>}
+            {error && <Badge variant='destructive'>{error.message}</Badge>}
           </div>
         </CardHeader>
         <CardContent>
@@ -70,22 +69,30 @@ export default function PendingEventsCard() {
               />
             </div>
           </div>
-          <EventTable
-            events={filteredEvents}
-            handleActionClick={(id, action) => {
-              setSelectedEvent({ id, action });
-              setAlertOpen(true);
-            }}
-            isLoading={isLoading}
-          />
+          {events && (
+            <EventTable
+              events={filteredEvents}
+              handleActionClick={(id, action) => {
+                setSelectedEvent({ id, action });
+                setAlertOpen(true);
+              }}
+              isLoading={isLoading}
+            />
+          )}
         </CardContent>
+        {events && events.data.length > 0 && (
+          <PaginationWithLinks
+            page={events.meta.current_page}
+            totalCount={events.meta.total}
+            pageSize={events.meta.per_page}
+          />
+        )}
       </Card>
-
       <ConfirmationDialog
         open={alertOpen}
         onOpenChange={setAlertOpen}
         selectedEvent={selectedEvent}
-        onConfirm={handleStatusChange}
+        onConfirm={(id, action) => mutate({ id, action })}
         onCancel={() => {
           setAlertOpen(false);
           setSelectedEvent(null);

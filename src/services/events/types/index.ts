@@ -1,6 +1,7 @@
 export interface Event {
   id?: string;
-  driverId?: string;
+  driver_id?: string;
+  instructor_id?: string;
   title: string;
   start: Date;
   end: Date;
@@ -8,14 +9,31 @@ export interface Event {
 }
 
 export interface adminEvent {
-  id: string;
-  title: string;
-  start: Date;
-  end: Date;
-  user_id: string;
-  created_at: string;
-  updated_at: string;
-  status: 'pending' | 'accepted' | 'rejected';
+  data: {
+    id: string;
+    title: string;
+    start: string;
+    end: string;
+    driver: { id: string; name: string };
+    instructor: { id: string; name: string };
+    created_at: string;
+    updated_at: string;
+    status: 'pending' | 'accepted' | 'rejected';
+  }[];
+  links: {
+    first: string;
+    last: string | null;
+    prev: string | null;
+    next: string | null;
+  };
+  meta: {
+    current_page: number;
+    from: number;
+    path: string;
+    per_page: number;
+    to: number;
+    total: number;
+  };
 }
 export interface Driver {
   id: string;

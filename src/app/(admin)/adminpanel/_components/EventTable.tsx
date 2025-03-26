@@ -20,7 +20,7 @@ import { Check, Loader, MoreHorizontal, X } from 'lucide-react';
 import { StatusBadge } from './StatusBadge';
 
 interface EventTableProps {
-  events: adminEvent[];
+  events: adminEvent['data'];
   handleActionClick: (id: string, action: 'accept' | 'reject') => void;
   isLoading: boolean;
 }
@@ -43,7 +43,8 @@ export const EventTable: React.FC<EventTableProps> = ({
         <TableHeader>
           <TableRow>
             <TableHead>Title</TableHead>
-            <TableHead>User ID</TableHead>
+            <TableHead>Instructor Name</TableHead>
+            <TableHead>Driver Name</TableHead>
             <TableHead>Start Date</TableHead>
             <TableHead>End Date</TableHead>
             <TableHead>Status</TableHead>
@@ -51,13 +52,14 @@ export const EventTable: React.FC<EventTableProps> = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {events.length > 0 ? (
+          {events && events.length > 0 ? (
             events.map((event) => (
               <TableRow key={event.id}>
                 <TableCell className='font-medium'>{event.title}</TableCell>
-                <TableCell>{event.user_id}</TableCell>
-                <TableCell>{event.start}</TableCell>
-                <TableCell>{event.end}</TableCell>
+                <TableCell>{event.instructor.name}</TableCell>
+                <TableCell>{event.driver.name}</TableCell>
+                <TableCell>{new Date(event.start).toLocaleString()} </TableCell>
+                <TableCell>{new Date(event.end).toLocaleString()} </TableCell>
                 <TableCell>
                   <StatusBadge status={event.status} />
                 </TableCell>
