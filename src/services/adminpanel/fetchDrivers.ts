@@ -11,7 +11,7 @@ export async function fetchDrivers(
 
   const params = new URLSearchParams();
   if (page) params.set('page', page);
-  if (search) params.set('search', search);
+  if (search) params.set('filter[search]', search);
 
   url += `?${params.toString()}`;
 
