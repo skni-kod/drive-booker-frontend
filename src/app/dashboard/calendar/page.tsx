@@ -7,6 +7,7 @@ import { getEventsQueryOptions } from '@/services/events/fetchEvents';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import { Suspense } from 'react';
 import AddEventDialog from './_components/AddEventDialog';
+import AvailabilityCheck from './_components/AvailabilityCheckPanel';
 import BigCalendar from './_components/BigCalendar/BigCalendar';
 
 export default async function CalendarPage() {
@@ -35,6 +36,9 @@ export default async function CalendarPage() {
             <AddEventDialog drivers={drivers} />
           </RoleGuard>
           <BigCalendar role={role} />
+          <RoleGuard allowedRoles={['instructor']}>
+            <AvailabilityCheck />
+          </RoleGuard>
         </HydrationBoundary>
       </Suspense>
     </main>
