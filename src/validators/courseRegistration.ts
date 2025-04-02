@@ -12,10 +12,6 @@ export const CourseRegistrationSchema: ZodType = z.object({
     .max(30, 'Nazwisko może mieć maksymalnie 30 znaków!')
     .regex(/^[a-zA-ZÀ-ž\s'-]+$/, 'Nazwisko może zawierać tylko litery!'),
   email: z.string().email('Podaj poprawny adres email!'),
-  phone: z
-    .string()
-    .regex(
-      /^\+?\d{9,15}$/,
-      'Numer telefonu musi mieć od 9 do 15 cyfr i może zaczynać się od +!',
-    ),
+  phone: z.string(),
+  phone_country: z.string(),
 });

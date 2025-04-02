@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { PhoneField } from './PhoneInput';
 
 interface CourseRegistrationFormProps {
   courseID: string;
@@ -37,18 +38,18 @@ export default function CourseRegistrationForm({
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<FormValues>({
+    setValue,
+  } = useForm<FormValues & { phone_country: string }>({
     resolver: zodResolver(CourseRegistrationSchema),
   });
 
   const [isChecked, setIsChecked] = useState(false);
 
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit = async (data: FormValues & { phone_country: string }) => {
     if (!isChecked) {
       toast.error('Musisz wyrazić zgodę na przetwarzanie danych.');
       return;
     }
-
     try {
       await axiosInstance.post(`/api/courses/${courseID}/registrations`, data);
       toast.success('Wysłano zgłoszenie na kurs!');
@@ -85,11 +86,12 @@ export default function CourseRegistrationForm({
           register={register}
           error={errors.email?.message}
         />
-        <FormField
+        <PhoneField
           id='phone'
           label='Numer telefonu'
           register={register}
           error={errors.phone?.message}
+          setValue={setValue}
         />
       </div>
       <div className='flex items-start gap-2'>

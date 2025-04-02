@@ -33,6 +33,11 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+
+    --react-international-phone-country-selector-background-color: transparent;
+    --react-international-phone-country-selector-background-color-hover: transparent;
+    --react-international-phone-country-selector-border-color: transparent;
+    --react-international-phone-country-selector-arrow-color: #000;
   }
   .dark {
     --background: 240 10% 3.9%;
