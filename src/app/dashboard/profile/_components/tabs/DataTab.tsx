@@ -1,5 +1,6 @@
 import { ConfirmPopup } from '@/components/shared/ConfirmPopup';
 import { FormField } from '@/components/shared/FormField';
+import { PhoneField } from '@/components/shared/PhoneInput/PhoneInput';
 import { Button } from '@/components/ui/button';
 import { axiosInstance } from '@/lib/axiosInstance';
 import { ProfileDataSchema } from '@/validators/profile';
@@ -37,6 +38,7 @@ const DataTab: React.FC<DataTabProps> = ({
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<FormValues>({
     resolver: zodResolver(ProfileDataSchema),
     defaultValues: initialValues,
@@ -74,11 +76,12 @@ const DataTab: React.FC<DataTabProps> = ({
               register={register}
               error={errors.name?.message}
             />
-            <FormField
+            <PhoneField
               id='phone_number'
               label='Numer telefonu'
               register={register}
               error={errors.phone_number?.message}
+              setValue={setValue}
             />
             <FormField
               id='voivodship'

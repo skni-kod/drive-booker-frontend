@@ -7,13 +7,6 @@ export const ProfileDataSchema: ZodType = z.object({
     .max(30, 'Imię może mieć maksymalnie 30 znaków!')
     .regex(/^[a-zA-ZÀ-ž\s'-]+$/, 'Imię może zawierać tylko litery!'),
 
-  phone_number: z
-    .string()
-    .regex(
-      /^\+?\d{9,15}$/,
-      'Numer telefonu musi mieć od 9 do 15 cyfr i może zaczynać się od +!',
-    ),
-
   voivodship: z
     .string()
     .min(1, 'Województwo jest wymagane!')
@@ -28,6 +21,17 @@ export const ProfileDataSchema: ZodType = z.object({
     .regex(
       /^\d+[a-zA-Z]?$/,
       'Numer domu musi być liczbą, opcjonalnie z literą!',
+    ),
+
+  phone_number: z
+    .string()
+    .regex(/^\d+$/, 'Numer telefonu może zawierać tylko cyfry'),
+
+  phone_country: z
+    .string()
+    .regex(
+      /^[a-z]{2}$/,
+      'Kod kraju musi składać się z dokładnie 2 małych liter',
     ),
 
   last_name: z

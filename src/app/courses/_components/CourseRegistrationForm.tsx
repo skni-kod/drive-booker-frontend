@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { PhoneField } from './PhoneInput';
+import { PhoneField } from '../../../components/shared/PhoneInput/PhoneInput';
 
 interface CourseRegistrationFormProps {
   courseID: string;
@@ -39,13 +39,13 @@ export default function CourseRegistrationForm({
     formState: { errors },
     reset,
     setValue,
-  } = useForm<FormValues & { phone_country: string }>({
+  } = useForm<FormValues>({
     resolver: zodResolver(CourseRegistrationSchema),
   });
 
   const [isChecked, setIsChecked] = useState(false);
 
-  const onSubmit = async (data: FormValues & { phone_country: string }) => {
+  const onSubmit = async (data: FormValues) => {
     if (!isChecked) {
       toast.error('Musisz wyrazić zgodę na przetwarzanie danych.');
       return;

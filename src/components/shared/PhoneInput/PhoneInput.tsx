@@ -2,6 +2,7 @@
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useEffect } from 'react';
 import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
 import {
   CountryIso2,
@@ -34,13 +35,18 @@ export const PhoneField = <T extends FieldValues>({
     return ['pl', 'ua', 'gb'].includes(iso2);
   });
 
-  const { inputValue, handlePhoneValueChange, country, setCountry } =
-    usePhoneInput({
-      defaultCountry,
-      value: '',
-      countries: countries,
-      onChange: (data) => {},
-    });
+  const { country, setCountry } = usePhoneInput({
+    defaultCountry,
+    value: '',
+    countries: countries,
+    onChange: (data) => {
+      setValue('phone_country' as Path<T>, country.iso2);
+    },
+  });
+
+  useEffect(() => {
+    register('phone_country' as Path<T>);
+  }, [register]);
 
   console.log(country.iso2);
 
