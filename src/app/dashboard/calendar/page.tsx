@@ -9,6 +9,7 @@ import { Suspense } from 'react';
 import AddEventDialog from './_components/AddEventDialog';
 import AvailabilityCheck from './_components/AvailabilityCheckPanel';
 import BigCalendar from './_components/BigCalendar/BigCalendar';
+import { DriverPreferredHours } from './_components/DriverPreferredHoursPanel';
 
 export default async function CalendarPage() {
   const queryClient = getQueryClient();
@@ -38,6 +39,9 @@ export default async function CalendarPage() {
           <BigCalendar role={role} />
           <RoleGuard allowedRoles={['instructor']}>
             <AvailabilityCheck />
+          </RoleGuard>
+          <RoleGuard allowedRoles={['driver']}>
+            <DriverPreferredHours />
           </RoleGuard>
         </HydrationBoundary>
       </Suspense>

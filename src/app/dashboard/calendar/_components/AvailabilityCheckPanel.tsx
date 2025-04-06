@@ -239,7 +239,7 @@ export default function AvailabilityCheck() {
           dostępność
         </div>
         <Button
-          onClick={saveAvailability}
+          onClick={() => saveAvailability()}
           disabled={isPending || !currentWeek || !nextWeek}
         >
           {isPending ? (

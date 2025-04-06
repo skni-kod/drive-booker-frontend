@@ -2,9 +2,9 @@ export interface Event {
   id?: string;
   driver_id?: string;
   instructor_id?: string;
-  title: string;
-  start: Date;
-  end: Date;
+  title?: string;
+  start: Date | string;
+  end: Date | string;
   status?: 'pending' | 'accepted' | 'rejected';
 }
 

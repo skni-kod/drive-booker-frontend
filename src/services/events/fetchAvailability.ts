@@ -17,3 +17,10 @@ export async function fetchAvailability() {
   );
   return response.data.data;
 }
+
+export async function fetchAvailabilityForDriver() {
+  const response = await axiosInstance.get<WeeklyScheduleResponse>(
+    `/api/driver/events/available`,
+  );
+  return response.data.data;
+}
