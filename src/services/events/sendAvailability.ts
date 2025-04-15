@@ -17,7 +17,6 @@ interface SavedAvailability {
 }
 
 interface InstructorAvailability {
-  instructor_id: number;
   availability: TimeSlot[];
 }
 
@@ -33,7 +32,6 @@ export async function sendAvailability(
     return axiosInstance.post<AvailabilityResponse>(
       '/api/instructor/availability',
       {
-        instructor_id: instructorAvailability.instructor_id,
         availability: instructorAvailability.availability,
       },
     );

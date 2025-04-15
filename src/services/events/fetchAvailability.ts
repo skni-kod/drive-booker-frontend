@@ -3,6 +3,7 @@ import { axiosInstance } from '@/lib/axiosInstance';
 export interface TimeSlot {
   start_time: string; // ISO 8601 date-time string
   end_time: string; // ISO 8601 date-time string
+  status: 'available' | 'booked';
 }
 interface WeeklyScheduleResponse {
   data: {

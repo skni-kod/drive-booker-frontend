@@ -34,6 +34,7 @@ interface TimeSlotState {
   day: string;
   time: string;
   selected: boolean;
+  booked: boolean;
 }
 
 interface DayAvailability {
@@ -59,17 +60,20 @@ const initializeWeekAvailability = (
     const dayString = format(date, 'yyyy-MM-dd');
     const dayName = format(date, 'EEEE', { locale: pl });
 
-    const selectedTimes = backendData
-      .filter(
-        (slot) => format(parseISO(slot.start_time), 'yyyy-MM-dd') === dayString,
-      )
-      .map((slot) => format(parseISO(slot.start_time), 'HH:mm'));
+    const dayTimeSlots: TimeSlotState[] = timeSlots.map((time) => {
+      const matchingSlot = backendData.find(
+        (slot) =>
+          format(parseISO(slot.start_time), 'yyyy-MM-dd') === dayString &&
+          format(parseISO(slot.start_time), 'HH:mm') === time,
+      );
 
-    const dayTimeSlots: TimeSlotState[] = timeSlots.map((time) => ({
-      day: dayString,
-      time,
-      selected: selectedTimes.includes(time),
-    }));
+      return {
+        day: dayString,
+        time,
+        selected: matchingSlot?.status === 'available',
+        booked: matchingSlot?.status === 'booked',
+      };
+    });
 
     days.push({ date, dayName, timeSlots: dayTimeSlots });
   }
@@ -97,10 +101,11 @@ export default function AvailabilityCheck() {
       [currentWeek, nextWeek].forEach((week) => {
         week.days.forEach((day) => {
           day.timeSlots.forEach((slot) => {
-            if (slot.selected) {
+            if (slot.selected && !slot.booked) {
               selectedSlots.push({
                 start_time: `${slot.day}T${slot.time}:00Z`,
                 end_time: `${slot.day}T${parseInt(slot.time) + 1}:00Z`,
+                status: `available`,
               });
             }
           });
@@ -112,8 +117,8 @@ export default function AvailabilityCheck() {
         return;
       }
 
-      await sendAvailability({ instructor_id: 1, availability: selectedSlots }); //TODO Change instructor_id dynamically on backend
-      toast.done('Dostępność została zapisana!');
+      await sendAvailability({ availability: selectedSlots });
+      toast.success('Dostępność została zapisana!');
     },
     onError: () => {
       toast.error('Nie udało się zapisać dostępności');
@@ -137,6 +142,9 @@ export default function AvailabilityCheck() {
   ) => {
     const week = weekType === 'current' ? currentWeek : nextWeek;
     if (!week) return;
+
+    // Don't toggle if slot is booked
+    if (week.days[dayIndex].timeSlots[slotIndex].booked) return;
 
     const updatedWeek = { ...week };
     updatedWeek.days[dayIndex].timeSlots[slotIndex].selected =
@@ -184,22 +192,31 @@ export default function AvailabilityCheck() {
             {day.timeSlots.map((slot, slotIndex) => (
               <div
                 key={slotIndex}
-                className={`m-1 h-10 cursor-pointer rounded border transition-colors ${
-                  slot.selected
-                    ? 'border-primary bg-primary hover:bg-primary/90'
-                    : 'bg-background hover:bg-muted'
+                className={`m-1 h-10 rounded border transition-colors ${
+                  slot.booked
+                    ? 'flex cursor-not-allowed items-center justify-center border-gray-300 bg-gray-200'
+                    : slot.selected
+                      ? 'cursor-pointer border-primary bg-primary hover:bg-primary/90'
+                      : 'cursor-pointer bg-background hover:bg-muted'
                 }`}
-                onClick={() => toggleTimeSlot(weekType, dayIndex, slotIndex)}
+                onClick={() =>
+                  !slot.booked && toggleTimeSlot(weekType, dayIndex, slotIndex)
+                }
                 role='checkbox'
                 aria-checked={slot.selected}
-                tabIndex={0}
+                aria-disabled={slot.booked}
+                tabIndex={slot.booked ? -1 : 0}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
+                  if (!slot.booked && (e.key === 'Enter' || e.key === ' ')) {
                     e.preventDefault();
                     toggleTimeSlot(weekType, dayIndex, slotIndex);
                   }
                 }}
-              />
+              >
+                {slot.booked && (
+                  <span className='font-bold text-gray-500'>X</span>
+                )}
+              </div>
             ))}
           </div>
         ))}
