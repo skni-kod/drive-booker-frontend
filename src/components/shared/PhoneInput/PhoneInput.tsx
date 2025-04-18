@@ -19,7 +19,7 @@ interface PhoneFieldProps<T extends FieldValues> {
   register: UseFormRegister<T>;
   error?: string;
   defaultCountry?: CountryIso2;
-  setValue: (name: Path<T>, value: any) => void;
+  setValue: (name: Path<T>, value: T[Path<T>]) => void;
 }
 
 export const PhoneField = <T extends FieldValues>({
@@ -39,8 +39,11 @@ export const PhoneField = <T extends FieldValues>({
     defaultCountry,
     value: '',
     countries: countries,
-    onChange: (data) => {
-      setValue('phone_country' as Path<T>, country.iso2);
+    onChange: () => {
+      setValue(
+        'phone_country' as Path<T>,
+        country.iso2 as unknown as T[Path<T>],
+      );
     },
   });
 
@@ -61,7 +64,10 @@ export const PhoneField = <T extends FieldValues>({
             selectedCountry={country.iso2}
             onSelect={({ iso2 }) => {
               setCountry(iso2);
-              setValue('phone_country' as Path<T>, iso2);
+              setValue(
+                'phone_country' as Path<T>,
+                iso2 as unknown as T[Path<T>],
+              );
             }}
             countries={countries}
           />
