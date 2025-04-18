@@ -13,7 +13,7 @@ export default function CourseRequests() {
   const searchParams = useSearchParams();
   const page = searchParams.get('page') || '1';
   const queryClient = useQueryClient();
-  const [loadingId, setLoadingId] = useState<number | null>(null); // do animacji przetwarzania zapytania
+  const [loadingId, setLoadingId] = useState<string | null>(null);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['course-requests', page],
@@ -25,7 +25,7 @@ export default function CourseRequests() {
   const meta = data?.meta;
 
   const mutation = useMutation({
-    mutationFn: async ({ id, action }: { id: number; action: string }) => {
+    mutationFn: async ({ id, action }: { id: string; action: string }) => {
       setLoadingId(id);
       const url = `${AdminPanelApiRoutes.Course_Registrations}/${id}/${action}`;
       await axiosInstance.post(url);
@@ -39,7 +39,7 @@ export default function CourseRequests() {
     },
   });
 
-  const handleAction = (id: number, action: 'accept' | 'decline') => {
+  const handleAction = (id: string, action: 'accept' | 'decline') => {
     mutation.mutate({ id, action });
   };
 
@@ -120,7 +120,7 @@ export default function CourseRequests() {
         {requests.length > 0 && meta && (
           <div className='col-span-2 mt-4 flex justify-center'>
             <PaginationWithLinks
-              page={meta.current_page}
+              page={Number(meta.current_page)}
               totalCount={meta.total}
               pageSize={meta.per_page}
             />
