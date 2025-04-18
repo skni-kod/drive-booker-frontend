@@ -13,7 +13,6 @@ interface DriverCardProps {
 }
 
 export default function DriverCard({
-  id,
   name,
   email,
   phone,

@@ -16,7 +16,6 @@ interface CourseCardProps {
 }
 
 export default function CourseCard({
-  id,
   name,
   category,
   startDate,
