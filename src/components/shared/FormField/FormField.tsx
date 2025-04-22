@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { HTMLInputTypeAttribute } from 'react';
+import { HTMLInputTypeAttribute, ReactNode } from 'react';
 import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
 
 interface FormFieldProps<T extends FieldValues> {
@@ -10,6 +10,7 @@ interface FormFieldProps<T extends FieldValues> {
   register: UseFormRegister<T>;
   error?: string;
   disabled?: boolean;
+  customInput?: ReactNode;
 }
 
 export const FormField = <T extends FieldValues>({
@@ -19,20 +20,23 @@ export const FormField = <T extends FieldValues>({
   register,
   error,
   disabled = false,
+  customInput,
 }: FormFieldProps<T>) => {
   return (
     <div>
       <Label htmlFor={id as string} className='text-lg xl:text-xl'>
         {label}
       </Label>
-      <Input
-        id={id as string}
-        type={type}
-        className='bg-white text-sm sm:text-base'
-        {...register(id)}
-        disabled={disabled}
-      />
-      {error && <span className='text-red-500'>{error}</span>}
+      {customInput || (
+        <Input
+          id={id as string}
+          type={type}
+          className='bg-white text-sm sm:text-base'
+          {...register(id)}
+          disabled={disabled}
+        />
+      )}
+      {error && <span className='text-sm text-red-500'>{error}</span>}
     </div>
   );
 };

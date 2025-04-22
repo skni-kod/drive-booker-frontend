@@ -2,84 +2,78 @@
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useEffect } from 'react';
-import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
+import { useMemo, useState } from 'react';
 import {
-  CountryIso2,
+  FieldValues,
+  Path,
+  PathValue,
+  useFormContext,
+  UseFormRegister,
+} from 'react-hook-form';
+import {
   CountrySelector,
   defaultCountries,
   parseCountry,
-  usePhoneInput,
 } from 'react-international-phone';
 import 'react-international-phone/style.css';
 
-interface PhoneFieldProps<T extends FieldValues> {
+const ALLOWED_COUNTRIES = ['pl', 'ua', 'de'] as const;
+type AllowedCountry = (typeof ALLOWED_COUNTRIES)[number];
+
+export interface CustomPhoneInputProps<T extends FieldValues> {
   id: Path<T>;
   label: string;
   register: UseFormRegister<T>;
   error?: string;
-  defaultCountry?: CountryIso2;
-  setValue: (name: Path<T>, value: T[Path<T>]) => void;
+  countryName?: Path<T>;
 }
 
-export const PhoneField = <T extends FieldValues>({
+export const PhoneInput = <T extends FieldValues>({
   id,
   label,
   register,
   error,
-  defaultCountry = 'pl',
-  setValue,
-}: PhoneFieldProps<T>) => {
-  const countries = defaultCountries.filter((country) => {
-    const { iso2 } = parseCountry(country);
-    return ['pl', 'ua', 'gb'].includes(iso2);
-  });
+  countryName = 'phone_country' as Path<T>,
+}: CustomPhoneInputProps<T>) => {
+  const { setValue } = useFormContext<T>();
+  const [country, setCountry] = useState<AllowedCountry>('pl');
 
-  const { country, setCountry } = usePhoneInput({
-    defaultCountry,
-    value: '',
-    countries: countries,
-    onChange: () => {
-      setValue(
-        'phone_country' as Path<T>,
-        country.iso2 as unknown as T[Path<T>],
-      );
-    },
-  });
+  const filteredCountries = useMemo(
+    () =>
+      defaultCountries.filter((country) => {
+        const { iso2 } = parseCountry(country);
+        return ALLOWED_COUNTRIES.includes(iso2 as AllowedCountry);
+      }),
+    [],
+  );
 
-  useEffect(() => {
-    register('phone_country' as Path<T>);
-  }, [register]);
-
-  console.log(country.iso2);
+  const handleCountryChange = (iso2: string) => {
+    const newCountry = iso2 as AllowedCountry;
+    setCountry(newCountry);
+    setValue(countryName, newCountry as PathValue<T, Path<T>>);
+  };
 
   return (
     <div>
-      <Label htmlFor={id as string} className='text-lg xl:text-xl'>
+      <Label htmlFor={id} className='text-lg xl:text-xl'>
         {label}
       </Label>
       <div className='relative'>
         <div className='absolute inset-y-0 left-2 flex items-center'>
           <CountrySelector
-            selectedCountry={country.iso2}
-            onSelect={({ iso2 }) => {
-              setCountry(iso2);
-              setValue(
-                'phone_country' as Path<T>,
-                iso2 as unknown as T[Path<T>],
-              );
-            }}
-            countries={countries}
+            selectedCountry={country}
+            onSelect={({ iso2 }) => handleCountryChange(iso2)}
+            countries={filteredCountries}
           />
         </div>
         <Input
-          id={id as string}
+          id={id}
           type='tel'
           {...register(id)}
           className='bg-white pl-16 text-sm sm:text-base'
         />
       </div>
-      {error && <span className='text-red-500'>{error}</span>}
+      {error && <span className='text-sm text-red-500'>{error}</span>}
     </div>
   );
 };
