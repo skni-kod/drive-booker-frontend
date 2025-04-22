@@ -20,23 +20,20 @@ export const FormField = <T extends FieldValues>({
   register,
   error,
   disabled = false,
-  customInput,
 }: FormFieldProps<T>) => {
   return (
     <div>
       <Label htmlFor={id as string} className='text-lg xl:text-xl'>
         {label}
       </Label>
-      {customInput || (
-        <Input
-          id={id as string}
-          type={type}
-          className='bg-white text-sm sm:text-base'
-          {...register(id)}
-          disabled={disabled}
-        />
-      )}
-      {error && <span className='text-sm text-red-500'>{error}</span>}
+      <Input
+        id={id as string}
+        type={type}
+        className='bg-white text-sm sm:text-base'
+        {...register(id)}
+        disabled={disabled}
+      />
+      {error && <span className='text-red-500'>{error}</span>}
     </div>
   );
 };
