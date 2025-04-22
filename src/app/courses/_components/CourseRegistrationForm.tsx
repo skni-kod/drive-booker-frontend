@@ -111,19 +111,19 @@ export default function CourseRegistrationForm({
           />
           <Label htmlFor='agreement' className='text-xs'>
             Wyrażam zgodę na przetwarzenie moich danych przez Ośrodek Szkolenia
-            Kierowców "Nazwa szkoły" w następujących celach: nawiązania kontaktu
-            podczas realizacji kursu / szkolenia / kwalifikacji; zapisu na
-            egzamin państwowy do wybranego Wojewódzkiego Ośrodka Ruchu
-            Drogowego; zapisu na jazdy w warunkach specjalnych; wyrobieniu
-            Profilu Kandydata na Kierowcą w wybranym Wydziale Komunikacji;
-            zapisu na jazdy próbne przed egzaminem państwowym w wybranym
-            Wojewódzkim Ośrodku Ruchu Drogowego; zgłoszenia do ubezpieczenia
-            wynikającego ze skierowania na szkolenie oraz innych wynikających z
-            prawidłowego wykonania usługi. Dane osobowe podaję dobrowolnie i
-            oświadczam, że są one zgodne z prawdą. Zapoznałem/am się z treścią
-            klauzuli informacyjnej, w tym z informacją o celu i sposobach
-            przetwarzania danych osobowych oraz prawie dostępu do treści swoich
-            danych i prawie ich poprawiania.
+            Kierowców &quot;Nazwa szkoły&quot; w następujących celach:
+            nawiązania kontaktu podczas realizacji kursu / szkolenia /
+            kwalifikacji; zapisu na egzamin państwowy do wybranego Wojewódzkiego
+            Ośrodka Ruchu Drogowego; zapisu na jazdy w warunkach specjalnych;
+            wyrobieniu Profilu Kandydata na Kierowcą w wybranym Wydziale
+            Komunikacji; zapisu na jazdy próbne przed egzaminem państwowym w
+            wybranym Wojewódzkim Ośrodku Ruchu Drogowego; zgłoszenia do
+            ubezpieczenia wynikającego ze skierowania na szkolenie oraz innych
+            wynikających z prawidłowego wykonania usługi. Dane osobowe podaję
+            dobrowolnie i oświadczam, że są one zgodne z prawdą. Zapoznałem/am
+            się z treścią klauzuli informacyjnej, w tym z informacją o celu i
+            sposobach przetwarzania danych osobowych oraz prawie dostępu do
+            treści swoich danych i prawie ich poprawiania.
           </Label>
         </div>
         <div className='flex flex-row justify-center gap-2 md:justify-start'>
