@@ -1,4 +1,5 @@
 import { z, ZodType } from 'zod';
+import { normalizePhone, isPhoneValid } from './isPhoneValid';
 
 export const ProfileDataSchema: ZodType = z.object({
   name: z
@@ -23,9 +24,9 @@ export const ProfileDataSchema: ZodType = z.object({
       'Numer domu musi być liczbą, opcjonalnie z literą!',
     ),
 
-  phone_number: z
-    .string()
-    .regex(/^\d+$/, 'Numer telefonu może zawierać tylko cyfry'),
+  phone_number: z.string().transform(normalizePhone).refine(isPhoneValid, {
+    message: 'Nieprawidłowy numer telefonu!',
+  }),
 
   phone_country: z
     .string()
