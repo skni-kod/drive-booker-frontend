@@ -101,6 +101,7 @@ export default function CourseRegistrationForm({
             label='Numer telefonu'
             register={register}
             error={errors.phone?.message}
+            countryName='phone_country'
           />
         </div>
         <div className='flex items-start gap-2'>

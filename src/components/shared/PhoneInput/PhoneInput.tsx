@@ -18,14 +18,17 @@ import {
 import 'react-international-phone/style.css';
 
 const ALLOWED_COUNTRIES = ['pl', 'ua', 'de'] as const;
-type AllowedCountry = (typeof ALLOWED_COUNTRIES)[number];
+export type AllowedCountry = (typeof ALLOWED_COUNTRIES)[number];
+
+const isAllowedCountry = (iso2: string): iso2 is AllowedCountry =>
+  (ALLOWED_COUNTRIES as readonly string[]).includes(iso2);
 
 export interface CustomPhoneInputProps<T extends FieldValues> {
   id: Path<T>;
   label: string;
   register: UseFormRegister<T>;
   error?: string;
-  countryName?: Path<T>;
+  countryName: Path<T>;
 }
 
 export const PhoneInput = <T extends FieldValues>({
@@ -33,24 +36,25 @@ export const PhoneInput = <T extends FieldValues>({
   label,
   register,
   error,
-  countryName = 'phone_country' as Path<T>,
+  countryName,
 }: CustomPhoneInputProps<T>) => {
   const { setValue } = useFormContext<T>();
   const [country, setCountry] = useState<AllowedCountry>('pl');
 
   const filteredCountries = useMemo(
     () =>
-      defaultCountries.filter((country) => {
-        const { iso2 } = parseCountry(country);
-        return ALLOWED_COUNTRIES.includes(iso2 as AllowedCountry);
+      defaultCountries.filter((c) => {
+        const { iso2 } = parseCountry(c);
+        return isAllowedCountry(iso2);
       }),
     [],
   );
 
   const handleCountryChange = (iso2: string) => {
-    const newCountry = iso2 as AllowedCountry;
-    setCountry(newCountry);
-    setValue(countryName, newCountry as PathValue<T, Path<T>>);
+    if (isAllowedCountry(iso2)) {
+      setCountry(iso2);
+      setValue(countryName, iso2 as PathValue<T, typeof countryName>);
+    }
   };
 
   return (

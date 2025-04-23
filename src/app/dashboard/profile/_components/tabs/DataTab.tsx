@@ -88,6 +88,7 @@ const DataTab: React.FC<DataTabProps> = ({
                 label='Numer telefonu'
                 register={register}
                 error={errors.phone_number?.message}
+                countryName='phone_country'
               />
               <FormField
                 id='voivodship'
