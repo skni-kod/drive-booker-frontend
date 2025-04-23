@@ -49,8 +49,8 @@ export function DriverPreferredHours() {
 
     // Prepare events for batch processing
     const events = driverPreferences.map((p) => ({
-      start: p.start_time,
-      end: p.end_time,
+      start: new Date(p.start_time),
+      end: new Date(p.end_time),
     }));
 
     mutation.mutate(events);

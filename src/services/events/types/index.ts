@@ -3,8 +3,8 @@ export interface Event {
   driver_id?: string;
   instructor_id?: string;
   title?: string;
-  start: Date | string;
-  end: Date | string;
+  start: Date;
+  end: Date;
   status?: 'pending' | 'accepted' | 'rejected';
 }
 
