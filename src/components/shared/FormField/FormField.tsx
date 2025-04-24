@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { HTMLInputTypeAttribute } from 'react';
+import { HTMLInputTypeAttribute, ReactNode } from 'react';
 import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
 
 interface FormFieldProps<T extends FieldValues> {
@@ -10,6 +10,7 @@ interface FormFieldProps<T extends FieldValues> {
   register: UseFormRegister<T>;
   error?: string;
   disabled?: boolean;
+  customInput?: ReactNode;
 }
 
 export const FormField = <T extends FieldValues>({
