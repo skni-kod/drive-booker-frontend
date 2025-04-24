@@ -5,7 +5,7 @@ export async function sendEvent(event: Event): Promise<void> {
   try {
     return axiosInstance.post('/api/instructor/events', {
       title: event.title,
-      driver_id: event.driverId,
+      driver_id: event.driver_id,
       start: event.start,
       end: event.end,
     });

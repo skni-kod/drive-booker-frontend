@@ -7,18 +7,20 @@ import { getEventsQueryOptions } from '@/services/events/fetchEvents';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import { Suspense } from 'react';
 import AddEventDialog from './_components/AddEventDialog';
+import AvailabilityCheck from './_components/AvailabilityCheckPanel';
 import BigCalendar from './_components/BigCalendar/BigCalendar';
+import { DriverPreferredHours } from './_components/DriverPreferredHoursPanel';
 
 export default async function CalendarPage() {
   const queryClient = getQueryClient();
 
   // Determine role from session
   const { hasRole } = await checkUserRole();
-  const endpoint = hasRole(['instructor']) ? 'instructor' : 'driver';
+  const role = hasRole(['instructor']) ? 'instructor' : 'driver';
   const drivers = hasRole(['instructor']) ? await fetchDrivers() : [];
 
   // Prefetch the events on the server side
-  await queryClient.prefetchQuery(getEventsQueryOptions(endpoint));
+  await queryClient.prefetchQuery(getEventsQueryOptions(role));
 
   return (
     <main className='container'>
@@ -34,7 +36,13 @@ export default async function CalendarPage() {
           <RoleGuard allowedRoles={['instructor']}>
             <AddEventDialog drivers={drivers} />
           </RoleGuard>
-          <BigCalendar endpoint={endpoint} />
+          <BigCalendar role={role} />
+          <RoleGuard allowedRoles={['instructor']}>
+            <AvailabilityCheck />
+          </RoleGuard>
+          <RoleGuard allowedRoles={['driver']}>
+            <DriverPreferredHours />
+          </RoleGuard>
         </HydrationBoundary>
       </Suspense>
     </main>
