@@ -93,7 +93,7 @@ export default function AvailabilityCheck() {
 
   const { mutate: saveAvailability, isPending } = useMutation({
     mutationFn: async () => {
-      if (!currentWeek || !nextWeek) return;
+      if (!currentWeek || !nextWeek || !data) return;
 
       const selectedSlots: TimeSlot[] = [];
 
@@ -102,11 +102,14 @@ export default function AvailabilityCheck() {
         week.days.forEach((day) => {
           day.timeSlots.forEach((slot) => {
             if (slot.selected && !slot.booked) {
-              selectedSlots.push({
-                start_time: `${slot.day}T${slot.time}:00Z`,
-                end_time: `${slot.day}T${parseInt(slot.time) + 1}:00Z`,
-                status: `available`,
-              });
+              const slotDateTime = new Date(`${slot.day}T${slot.time}:00Z`);
+              if (slotDateTime >= new Date(today)) {
+                selectedSlots.push({
+                  start_time: `${slot.day}T${slot.time}:00Z`,
+                  end_time: `${slot.day}T${parseInt(slot.time) + 1}:00Z`,
+                  status: `available`,
+                });
+              }
             }
           });
         });
