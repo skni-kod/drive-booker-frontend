@@ -30,7 +30,7 @@ const BigCalendar = ({ role }: { role: string }) => {
   };
 
   const handleSelectEvent = (event: Event) => {
-    if (role === 'instructor') {
+    if (role === 'instructor' && event.status === 'pending') {
       setSelectedEvent(event);
       setPopoverOpen(true);
     }
