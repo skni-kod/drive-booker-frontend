@@ -38,7 +38,9 @@ export default async function middleware(req: NextRequest) {
     adminRoutes.some((route) => requestPath.startsWith(route)) &&
     !session.role?.includes('owner')
   ) {
-    return NextResponse.redirect('/dashboard');
+    const loginUrl = new URL('/login', req.nextUrl.origin);
+    loginUrl.searchParams.set('callbackUrl', req.nextUrl.toString());
+    return NextResponse.redirect(loginUrl.toString());
   }
 
   return NextResponse.next();

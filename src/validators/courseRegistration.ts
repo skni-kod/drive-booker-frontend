@@ -1,4 +1,5 @@
 import { z, ZodType } from 'zod';
+import { isPhoneValid, normalizePhone } from './isPhoneValid';
 
 export const CourseRegistrationSchema: ZodType = z.object({
   name: z
@@ -12,10 +13,13 @@ export const CourseRegistrationSchema: ZodType = z.object({
     .max(30, 'Nazwisko może mieć maksymalnie 30 znaków!')
     .regex(/^[a-zA-ZÀ-ž\s'-]+$/, 'Nazwisko może zawierać tylko litery!'),
   email: z.string().email('Podaj poprawny adres email!'),
-  phone: z
+  phone: z.string().transform(normalizePhone).refine(isPhoneValid, {
+    message: 'Nieprawidłowy numer telefonu!',
+  }),
+  phone_country: z
     .string()
     .regex(
-      /^\+?\d{9,15}$/,
-      'Numer telefonu musi mieć od 9 do 15 cyfr i może zaczynać się od +!',
+      /^[a-z]{2}$/,
+      'Kod kraju musi składać się z dokładnie 2 małych liter',
     ),
 });

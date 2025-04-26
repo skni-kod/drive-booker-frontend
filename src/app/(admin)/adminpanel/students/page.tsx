@@ -1,6 +1,6 @@
 'use client';
 
-import { PaginationWithLinks } from '@/components/shared/Pagination/PaginationComponent';
+import { PaginationWithLinks } from '@/components/shared/PaginationWithLinks';
 import { Input } from '@/components/ui/input';
 import { fetchDrivers } from '@/services/adminpanel/fetchDrivers';
 import { useQuery } from '@tanstack/react-query';

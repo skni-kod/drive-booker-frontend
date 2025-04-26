@@ -1,6 +1,6 @@
 'use client';
 
-import { PaginationWithLinks } from '@/components/shared/Pagination/PaginationComponent';
+import { PaginationWithLinks } from '@/components/shared/PaginationWithLinks';
 import { Button } from '@/components/ui/button';
 import { AdminPanelApiRoutes } from '@/enums/routes';
 import { axiosInstance } from '@/lib/axiosInstance';

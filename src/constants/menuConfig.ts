@@ -1,18 +1,23 @@
 export const menuItems = {
   driver: [
     { label: 'Panel', href: '/dashboard' },
-    { label: 'Kalendarz', href: '' },
+    { label: 'Kalendarz', href: '/dashboard/calendar' },
     { label: 'Mój kurs', href: '' },
     { label: 'Mój profil', href: '/dashboard/profile' },
   ],
   owner: [
-    { label: 'Kalendarz', href: '/adminpanel/calendar' },
+    { label: 'Oczekujące', href: '/adminpanel/pending-events' },
     { label: 'Kursy', href: '/adminpanel/courses' },
-    { label: 'Pracownicy', href: '/adminpanel/staff' },
-    { label: 'Pojazdy', href: '/adminpanel/vehicles' },
+    { label: 'Pracownicy', href: '' },
+    { label: 'Pojazdy', href: '' },
     { label: 'Kursanci', href: '/adminpanel/students' },
     { label: 'Zgloszenia', href: '/adminpanel/course-requests' },
-    { label: 'Moja szkoła', href: '/adminpanel/school' },
+    { label: 'Moja szkoła', href: '' },
   ],
-  instructor: [],
+  instructor: [
+    { label: 'Panel', href: '/dashboard' },
+    { label: 'Kalendarz', href: '/dashboard/calendar' },
+    { label: 'Kursanci', href: '' },
+    { label: 'Mój profil', href: '/dashboard/profile' },
+  ],
 };

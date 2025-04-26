@@ -35,7 +35,7 @@ export default function AddEventDialog({ drivers }: { drivers: Driver[] }) {
   const methods = useForm({
     defaultValues: {
       title: '',
-      driverId: '',
+      driver_id: '',
       start: new Date(),
       end: new Date(),
     },
@@ -56,20 +56,28 @@ export default function AddEventDialog({ drivers }: { drivers: Driver[] }) {
   });
 
   const onSubmit = (data: Event) => {
-    const { title, driverId, start, end } = data;
-    if (!title || !driverId || !start || !end) {
+    const { title, driver_id, start, end } = data;
+    if (!title || !driver_id || !start || !end) {
       toast.info('Please fill in all fields');
       return;
     }
+
+    console.log('Submitting event with data:', {
+      title,
+      driver_id,
+      start,
+      end,
+    });
+
     mutate({
       title,
-      driverId,
+      driver_id: driver_id,
       start: start,
       end: end,
     });
   };
 
-  const selectedDriver = methods.watch('driverId');
+  const selectedDriver = methods.watch('driver_id');
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -106,7 +114,7 @@ export default function AddEventDialog({ drivers }: { drivers: Driver[] }) {
                   <Select
                     value={selectedDriver}
                     onValueChange={(value: string) =>
-                      methods.setValue('driverId', value)
+                      methods.setValue('driver_id', value)
                     }
                   >
                     <SelectTrigger className='w-full'>

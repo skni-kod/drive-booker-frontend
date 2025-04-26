@@ -51,7 +51,7 @@ const SideMenu = () => {
             <div className='mt-10 space-y-5'>
               <ul className='space-y-4'>
                 {items.map((item) => (
-                  <li key={item.href} className='flex items-center'>
+                  <li key={item.label} className='flex items-center'>
                     <div className='h-6 w-6 bg-muted-foreground'></div>
                     <Link href={item.href}>
                       <span

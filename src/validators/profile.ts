@@ -1,4 +1,5 @@
 import { z, ZodType } from 'zod';
+import { normalizePhone, isPhoneValid } from './isPhoneValid';
 
 export const ProfileDataSchema: ZodType = z.object({
   name: z
@@ -6,13 +7,6 @@ export const ProfileDataSchema: ZodType = z.object({
     .min(2, 'Imię musi mieć co najmniej 2 znaki!')
     .max(30, 'Imię może mieć maksymalnie 30 znaków!')
     .regex(/^[a-zA-ZÀ-ž\s'-]+$/, 'Imię może zawierać tylko litery!'),
-
-  phone_number: z
-    .string()
-    .regex(
-      /^\+?\d{9,15}$/,
-      'Numer telefonu musi mieć od 9 do 15 cyfr i może zaczynać się od +!',
-    ),
 
   voivodship: z
     .string()
@@ -28,6 +22,17 @@ export const ProfileDataSchema: ZodType = z.object({
     .regex(
       /^\d+[a-zA-Z]?$/,
       'Numer domu musi być liczbą, opcjonalnie z literą!',
+    ),
+
+  phone_number: z.string().transform(normalizePhone).refine(isPhoneValid, {
+    message: 'Nieprawidłowy numer telefonu!',
+  }),
+
+  phone_country: z
+    .string()
+    .regex(
+      /^[a-z]{2}$/,
+      'Kod kraju musi składać się z dokładnie 2 małych liter',
     ),
 
   last_name: z

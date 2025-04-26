@@ -10,8 +10,8 @@ import { Calendar, momentLocalizer, View, Views } from 'react-big-calendar';
 import './bigCalendarStyling.css';
 import { SelectEventDialog } from './SelectEventDialog';
 
-const BigCalendar = ({ endpoint }: { endpoint: string }) => {
-  const eventsQueryOptions = getEventsQueryOptions(endpoint);
+const BigCalendar = ({ role }: { role: string }) => {
+  const eventsQueryOptions = getEventsQueryOptions(role);
   const { data: events } = useSuspenseQuery(eventsQueryOptions);
   const [view, setView] = useState<View>(Views.WEEK);
   const [date, setDate] = useState(new Date());
@@ -30,8 +30,10 @@ const BigCalendar = ({ endpoint }: { endpoint: string }) => {
   };
 
   const handleSelectEvent = (event: Event) => {
-    setSelectedEvent(event);
-    setPopoverOpen(true);
+    if (role === 'instructor' && event.status === 'pending') {
+      setSelectedEvent(event);
+      setPopoverOpen(true);
+    }
   };
 
   return (
@@ -39,6 +41,16 @@ const BigCalendar = ({ endpoint }: { endpoint: string }) => {
       <Calendar
         localizer={localizer}
         events={events || []}
+        eventPropGetter={(event) => {
+          const backgroundColor =
+            event.status === 'accepted'
+              ? '#090'
+              : event.status === 'rejected'
+                ? '#900'
+                : '#999'; // Default (pending)
+
+          return { style: { backgroundColor } };
+        }}
         style={{ height: 700, width: '100%' }}
         date={date}
         onNavigate={handleNavigate}

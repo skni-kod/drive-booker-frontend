@@ -1,0 +1,1 @@
+export { PaginationWithLinks } from './PaginationComponent';
