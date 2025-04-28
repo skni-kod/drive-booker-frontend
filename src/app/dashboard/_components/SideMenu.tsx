@@ -2,6 +2,8 @@
 
 import { logout } from '@/actions/logout';
 import { Button } from '@/components/ui/button';
+import { menuItems } from '@/constants/menuConfig';
+import { useUserRole } from '@/hooks/useUserRole';
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -11,7 +13,19 @@ const SideMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
+  const roles = useUserRole();
+  if (!roles) return null;
+
   const isActive = (path: string) => path === pathname;
+
+  let items = [];
+  if (roles.includes('owner')) {
+    items = menuItems.owner;
+  } else if (roles.includes('instructor')) {
+    items = menuItems.instructor;
+  } else {
+    items = menuItems.driver;
+  }
 
   return (
     <div>
@@ -36,53 +50,47 @@ const SideMenu = () => {
             <div className='mt-10 h-24 w-52 bg-muted-foreground'></div>
             <div className='mt-10 space-y-5'>
               <ul className='space-y-4'>
-                <li className='flex items-center'>
-                  <div className='h-6 w-6 bg-muted-foreground'></div>
-                  <Link href='/dashboard'>
-                    <span
-                      className={`ml-3 text-sm sm:text-base md:text-lg xl:text-xl ${isActive('/dashboard') ? 'font-bold' : 'font-normal'}`}
-                    >
-                      Panel
-                    </span>
-                  </Link>
-                </li>
-                <li className='flex items-center'>
-                  <div className='h-6 w-6 bg-muted-foreground'></div>
-                  <Link href={`/dashboard/calendar`}>
-                    <span
-                      className={`ml-3 text-sm sm:text-base md:text-lg xl:text-xl ${isActive(`/dashboard/calendar`) ? 'font-bold' : 'font-normal'}`}
-                    >
-                      Kalendarz
-                    </span>
-                  </Link>
-                </li>
-                <li className='flex items-center'>
-                  <div className='h-6 w-6 bg-muted-foreground'></div>
-                  <span className='ml-3 text-sm sm:text-base md:text-lg xl:text-xl'>
-                    Mój kurs
-                  </span>
-                </li>
-                <li className='flex items-center'>
-                  <div className='h-6 w-6 bg-muted-foreground'></div>
-                  <Link href={`/dashboard/profile`}>
-                    <span
-                      className={`ml-3 text-sm sm:text-base md:text-lg xl:text-xl ${isActive(`/dashboard/profile`) ? 'font-bold' : 'font-normal'}`}
-                    >
-                      Mój profil
-                    </span>
-                  </Link>
-                </li>
+                {items.map((item) => (
+                  <li key={item.label} className='flex items-center'>
+                    <div className='h-6 w-6 bg-muted-foreground'></div>
+                    <Link href={item.href}>
+                      <span
+                        className={`ml-3 text-sm sm:text-base md:text-lg xl:text-xl ${
+                          isActive(item.href) ? 'font-bold' : 'font-normal'
+                        }`}
+                      >
+                        {item.label}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
               </ul>
-              <Button className='text-sm font-bold'>OPŁAĆ KURS</Button>
+              {roles.includes('driver') && (
+                <Button className='text-sm font-bold'>OPŁAĆ KURS</Button>
+              )}
             </div>
           </div>
-          <div className='my-10 flex h-[241px] w-[218px] items-end justify-center bg-muted-foreground font-bold'>
-            <h1>BANER REKLAMOWY</h1>
-          </div>
-          <div className='mb-10'>
-            <Button className='text-sm font-bold' onClick={logout}>
-              LOGOUT
-            </Button>
+          <div className='flex w-full flex-col items-center justify-between gap-y-10'>
+            {roles.includes('owner') ? (
+              <div className='text-center'>
+                <h2 className='text-sm font-bold sm:text-base md:text-lg xl:text-xl'>
+                  Aktualny pakiet PRO
+                </h2>
+                <p className='text-sm'>30 z 100</p>
+                <p className='text-xs text-gray-600'>aktywnych kursantów</p>
+                <hr className='my-2 border-black' />
+                <Button className='text-sm font-bold'>ZMIEN PAKIET</Button>
+              </div>
+            ) : (
+              <div className='my-10 flex h-[241px] w-[218px] items-end justify-center bg-muted-foreground font-bold'>
+                <h1>BANER REKLAMOWY</h1>
+              </div>
+            )}
+            <div className='mb-10'>
+              <Button className='text-sm font-bold' onClick={logout}>
+                LOGOUT
+              </Button>
+            </div>
           </div>
         </div>
       </div>

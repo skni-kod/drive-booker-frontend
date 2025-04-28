@@ -28,8 +28,10 @@ export default async function middleware(req: NextRequest) {
     session.isLoggedIn &&
     (requestPath.startsWith('/login') || requestPath.startsWith('/register'))
   ) {
-    const dashboardUrl = new URL('/dashboard', req.nextUrl.origin);
-    return NextResponse.redirect(dashboardUrl.toString());
+    const redirectUrl = session.role?.includes('owner')
+      ? '/adminpanel'
+      : '/dashboard';
+    return NextResponse.redirect(new URL(redirectUrl, req.nextUrl.origin));
   }
 
   if (

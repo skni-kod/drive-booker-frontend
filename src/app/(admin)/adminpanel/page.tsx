@@ -1,9 +1,7 @@
-import PendingEventsCard from './_components/PendingEventsCard';
-
-export default function AdminPage() {
+export default function Home() {
   return (
-    <>
-      <PendingEventsCard />
-    </>
+    <div className='grid min-h-screen items-center justify-items-center'>
+      <main className='flex items-center'>ADMIN PANEL</main>
+    </div>
   );
 }
