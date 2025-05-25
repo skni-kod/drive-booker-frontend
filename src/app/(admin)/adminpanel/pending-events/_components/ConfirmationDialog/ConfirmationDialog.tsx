@@ -17,7 +17,7 @@ interface ConfirmationDialogProps {
   onCancel: () => void;
 }
 
-const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
+export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   open,
   onOpenChange,
   selectedEvent,
@@ -66,5 +66,3 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
     </AlertDialog>
   );
 };
-
-export default ConfirmationDialog;
