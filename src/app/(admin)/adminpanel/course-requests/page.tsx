@@ -18,7 +18,6 @@ export default function CourseRequests() {
   const { data, isLoading, isError } = useQuery({
     queryKey: ['course-requests', page],
     queryFn: () => fetchCourseRequests(page),
-    staleTime: 60 * 1000,
   });
 
   const requests = data?.data || [];
