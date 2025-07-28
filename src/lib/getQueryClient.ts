@@ -9,7 +9,9 @@ function makeQueryClient() {
     defaultOptions: {
       queries: {
         //stale time is needed for ssr
-        staleTime: 60 * 1000,
+        staleTime: 30 * 1000,
+        refetchOnWindowFocus: true,
+        refetchInterval: 60_000,
       },
       dehydrate: {
         // include pending queries in dehydration
