@@ -6,10 +6,15 @@ export enum UnAuthorizedRoute {
 export enum AuthorizedRoute {
   Dashboard = '/dashboard',
   Profile = '/dashboard/user',
+  FillProfile = '/dashboard/fill-profile',
 }
 
 export enum CommonRoutes {
   Home = '/',
+}
+
+export enum AdminRoutes {
+  Panel = '/adminpanel',
 }
 
 export enum ApiRoutes {
