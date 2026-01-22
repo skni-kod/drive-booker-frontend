@@ -9,7 +9,7 @@ export const StatusBadge = ({ status }: { status: string }) => {
           variant='outline'
           className='flex items-center gap-1 border-yellow-200 bg-yellow-50 text-yellow-700'
         >
-          <Clock className='h-3 w-3' />
+          <Clock className='h-3 w-3' data-testid={`icon-${status}`} />
           Pending
         </Badge>
       );
@@ -19,7 +19,7 @@ export const StatusBadge = ({ status }: { status: string }) => {
           variant='outline'
           className='flex items-center gap-1 border-green-200 bg-green-50 text-green-700'
         >
-          <Check className='h-3 w-3' />
+          <Check className='h-3 w-3' data-testid={`icon-${status}`} />
           Accepted
         </Badge>
       );
@@ -29,7 +29,7 @@ export const StatusBadge = ({ status }: { status: string }) => {
           variant='outline'
           className='flex items-center gap-1 border-red-200 bg-red-50 text-red-700'
         >
-          <X className='h-3 w-3' />
+          <X className='h-3 w-3' data-testid={`icon-${status}`} />
           Rejected
         </Badge>
       );
