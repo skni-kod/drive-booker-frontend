@@ -8,6 +8,7 @@ import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import PaymentButton from './PaymentButton';
 
 const SideMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -66,7 +67,7 @@ const SideMenu = () => {
                 ))}
               </ul>
               {roles.includes('driver') && (
-                <Button className='text-sm font-bold'>OPŁAĆ KURS</Button>
+                <PaymentButton priceId='price_1Rt2WYLtEef3nPWz2m8loy3R' />
               )}
             </div>
           </div>
