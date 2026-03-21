@@ -1,6 +1,7 @@
 export enum UnAuthorizedRoute {
   Login = '/login',
   Register = '/register',
+  Courses = '/courses',
 }
 
 export enum AuthorizedRoute {
