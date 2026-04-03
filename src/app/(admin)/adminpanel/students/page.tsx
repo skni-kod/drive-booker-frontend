@@ -19,7 +19,6 @@ export default function StudentsContent() {
   const { data, isLoading, isError } = useQuery({
     queryKey: ['drivers', page, searchQuery],
     queryFn: () => fetchDrivers(page, searchQuery),
-    staleTime: 60 * 1000,
   });
 
   useEffect(() => {

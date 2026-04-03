@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/table';
 import { adminEvent } from '@/services/events/types';
 import { Check, Loader, MoreHorizontal, X } from 'lucide-react';
-import { StatusBadge } from './StatusBadge';
+import { StatusBadge } from '../StatusBadge';
 
 interface EventTableProps {
   events: adminEvent['data'];
@@ -33,7 +33,7 @@ export const EventTable: React.FC<EventTableProps> = ({
   if (isLoading) {
     return (
       <div className='flex h-32 items-center justify-center'>
-        <Loader className='animate-spin' />
+        <Loader className='animate-spin' data-testid='loader' />
       </div>
     );
   }

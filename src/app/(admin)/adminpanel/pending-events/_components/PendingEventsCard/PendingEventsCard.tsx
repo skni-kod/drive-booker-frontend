@@ -16,10 +16,10 @@ import { usePendingEvents } from '@/services/events/getPendingEvents';
 import { Search } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
-import ConfirmationDialog from './ConfirmationDialog';
-import { EventTable } from './EventTable';
+import { ConfirmationDialog } from '../ConfirmationDialog';
+import { EventTable } from '../EventTable';
 
-export default function PendingEventsCard() {
+export const PendingEventsCard = () => {
   const searchParams = useSearchParams();
   const page = Number(searchParams.get('page')) || 1;
   const [searchQuery, setSearchQuery] = useState('');
@@ -81,11 +81,13 @@ export default function PendingEventsCard() {
           )}
         </CardContent>
         {events && events.data.length > 0 && (
-          <PaginationWithLinks
-            page={events.meta.current_page}
-            totalCount={events.meta.total}
-            pageSize={events.meta.per_page}
-          />
+          <div data-testid='pagination-component'>
+            <PaginationWithLinks
+              page={events.meta.current_page}
+              totalCount={events.meta.total}
+              pageSize={events.meta.per_page}
+            />
+          </div>
         )}
       </Card>
       <ConfirmationDialog
@@ -100,4 +102,4 @@ export default function PendingEventsCard() {
       />
     </div>
   );
-}
+};
