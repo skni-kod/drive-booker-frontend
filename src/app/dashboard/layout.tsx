@@ -13,7 +13,7 @@ export default async function DashboardLayout({
       {/* SIDE MENU */}
       <SideMenu />
       {/* CONTENT */}
-      <div className='flex-1 overflow-auto px-4 py-6 md:px-10'>
+      <div className='flex-1 overflow-auto px-4 py-6 md:px-16'>
         <div className='space-y-6'>
           <DashboardNavbar />
           {children}
