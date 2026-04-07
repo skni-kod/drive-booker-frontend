@@ -16,8 +16,8 @@ function CircularProgress({
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
   return (
-    <div className='flex flex-col items-center gap-6'>
-      <div className='relative h-40 w-40'>
+    <div className='flex w-full flex-col items-center gap-5'>
+      <div className='relative h-48 w-48 lg:h-52 lg:w-52'>
         <svg
           className='absolute left-0 top-0 h-full w-full -rotate-90 transform'
           viewBox='0 0 120 120'
@@ -47,7 +47,7 @@ function CircularProgress({
         </svg>
         {/* Center Text */}
         <div className='absolute inset-0 flex flex-col items-center justify-center text-center'>
-          <span className='text-2xl font-bold text-gray-900'>{topText}</span>
+          <span className='text-3xl font-bold text-gray-900'>{topText}</span>
           <span className='mt-1 text-xs font-bold text-gray-800'>
             {bottomText}
           </span>
@@ -63,7 +63,7 @@ function CircularProgress({
 
 export function ProgressStats() {
   return (
-    <section className='flex w-full flex-col items-start justify-start gap-12 py-10 md:flex-row md:items-start md:justify-start lg:gap-16'>
+    <section className='grid w-full grid-cols-1 gap-10 py-10 md:grid-cols-3 md:gap-8'>
       <CircularProgress
         percentage={72}
         topText='72%'
