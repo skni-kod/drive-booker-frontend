@@ -14,21 +14,23 @@ export function PanelNavbar({
       <h1 className='text-2xl font-bold text-gray-900'>{title}</h1>
 
       <div className='flex items-center gap-4'>
-        <button
-          type='button'
-          aria-label='Powiadomienia'
-          className='rounded-full p-2.5 text-[#0B5DB8] transition hover:bg-blue-50 hover:text-[#084A93]'
-        >
-          <Bell size={22} />
-        </button>
+        <div className='flex items-center'>
+          <button
+            type='button'
+            aria-label='Powiadomienia'
+            className='rounded-full p-2.5 text-[#0B5DB8] transition hover:bg-blue-50 hover:text-[#084A93]'
+          >
+            <Bell size={22} />
+          </button>
 
-        <button
-          type='button'
-          aria-label='Ustawienia'
-          className='rounded-full p-2.5 text-[#0B5DB8] transition hover:bg-blue-50 hover:text-[#084A93]'
-        >
-          <Settings size={22} />
-        </button>
+          <button
+            type='button'
+            aria-label='Ustawienia'
+            className='rounded-full p-2.5 text-[#0B5DB8] transition hover:bg-blue-50 hover:text-[#084A93]'
+          >
+            <Settings size={22} />
+          </button>
+        </div>
 
         <button
           type='button'
