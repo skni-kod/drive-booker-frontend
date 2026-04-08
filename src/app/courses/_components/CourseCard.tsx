@@ -31,6 +31,7 @@ export default function CourseCard({
       category={category}
       icon={icon}
       subtitle={address}
+      href={hrefDetails}
       extraInfoTopRight={
         <div className='text-right text-sm'>
           {startDate && (
