@@ -10,10 +10,22 @@ import { Calendar, momentLocalizer, View, Views } from 'react-big-calendar';
 import './bigCalendarStyling.css';
 import { SelectEventDialog } from './SelectEventDialog';
 
-const BigCalendar = ({ role }: { role: string }) => {
+type BigCalendarProps = {
+  role: string;
+  defaultView?: View;
+  availableViews?: View[];
+  height?: number;
+};
+
+const BigCalendar = ({
+  role,
+  defaultView = Views.WEEK,
+  availableViews,
+  height = 700,
+}: BigCalendarProps) => {
   const eventsQueryOptions = getEventsQueryOptions(role);
   const { data: events } = useSuspenseQuery(eventsQueryOptions);
-  const [view, setView] = useState<View>(Views.WEEK);
+  const [view, setView] = useState<View>(defaultView);
   const [date, setDate] = useState(new Date());
   const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
   const [selectedEvent, setSelectedEvent] = useState<Event>();
@@ -51,12 +63,13 @@ const BigCalendar = ({ role }: { role: string }) => {
 
           return { style: { backgroundColor } };
         }}
-        style={{ height: 700, width: '100%' }}
+        style={{ height, width: '100%' }}
         date={date}
         onNavigate={handleNavigate}
         messages={messages}
         culture={'pl'}
         view={view}
+        views={availableViews}
         onView={handleViewChange}
         onSelectEvent={handleSelectEvent}
         formats={{

@@ -1,4 +1,4 @@
-import { CalendarPlaceholder } from './_components/CalendarPlaceholder';
+import { DashboardCalendar } from './_components/DashboardCalendar';
 import { MessagesPlaceholder } from './_components/MessagesPlaceholder';
 import { ProgressStats } from './_components/ProgressStats';
 import { WeeklySchedule } from './_components/WeeklySchedule';
@@ -12,7 +12,7 @@ const DashboardPage = () => {
       </div>
 
       <div className='space-y-8 xl:col-span-1'>
-        <CalendarPlaceholder />
+        <DashboardCalendar />
         <MessagesPlaceholder />
       </div>
     </div>
