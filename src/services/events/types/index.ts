@@ -1,11 +1,12 @@
 export interface Event {
-  id?: string;
+  id?: number | string;
   driver_id?: string;
   instructor_id?: string;
   title?: string;
   start: Date;
   end: Date;
   status?: 'pending' | 'accepted' | 'rejected';
+  location?: string | null;
 }
 
 export interface adminEvent {

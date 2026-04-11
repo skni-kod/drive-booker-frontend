@@ -54,6 +54,7 @@ export const SelectEventDialog: React.FC<SelectEventDialogProps> = ({
     mutationFn: deleteEvent,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['events'] });
+      queryClient.invalidateQueries({ queryKey: ['driverWeeklySchedule'] });
       toast.success('Wydarzenie zostało usunięte');
       onOpenChange(false);
     },
@@ -67,6 +68,7 @@ export const SelectEventDialog: React.FC<SelectEventDialogProps> = ({
     mutationFn: updateEvent,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['events'] });
+      queryClient.invalidateQueries({ queryKey: ['driverWeeklySchedule'] });
       toast.success('Wydarzenie zostało zaktualizowane');
       onOpenChange(false);
       methods.reset();

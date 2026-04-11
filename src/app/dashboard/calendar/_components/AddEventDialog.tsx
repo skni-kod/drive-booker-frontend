@@ -45,6 +45,7 @@ export default function AddEventDialog({ drivers }: { drivers: Driver[] }) {
     mutationFn: sendEvent,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['events'] });
+      queryClient.invalidateQueries({ queryKey: ['driverWeeklySchedule'] });
       toast.success('Wydarzenie zostało dodane');
       setOpen(false);
       methods.reset();
