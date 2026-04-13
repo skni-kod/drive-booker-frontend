@@ -25,6 +25,7 @@ export default function DriverCard({
       title={name}
       subtitle={email}
       icon={icon}
+      href={hrefDetails}
       contentLeft={
         <>{phone && <p className='text-sm text-muted-foreground'>{phone}</p>}</>
       }

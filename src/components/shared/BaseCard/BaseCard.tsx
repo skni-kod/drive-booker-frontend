@@ -1,5 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
+import Link from 'next/link';
 import { ReactNode } from 'react';
 
 interface BaseCardProps {
@@ -7,6 +8,7 @@ interface BaseCardProps {
   subtitle?: string;
   icon?: string;
   category?: string;
+  href?: string;
   extraInfoTopRight?: ReactNode;
   contentLeft?: ReactNode;
   contentRight?: ReactNode;
@@ -18,6 +20,7 @@ export default function BaseCard({
   subtitle,
   icon,
   category,
+  href,
   extraInfoTopRight,
   contentLeft,
   contentRight,
@@ -28,27 +31,32 @@ export default function BaseCard({
       <CardContent className='p-4'>
         {/* mobile */}
         <div className='flex flex-col md:hidden'>
-          <div className='mb-2 flex items-start justify-between'>
-            {icon ? (
-              <Image src={icon} width={32} height={32} alt='icon' />
-            ) : (
-              <div className='h-8 w-8 rounded-sm bg-muted' />
+          <Link href={href ?? '#'} className='block'>
+            <div className='mb-2 flex items-start justify-between'>
+              {icon ? (
+                <Image src={icon} width={32} height={32} alt='icon' />
+              ) : (
+                <div className='h-8 w-8 rounded-sm bg-muted' />
+              )}
+              {category && (
+                <span className='rounded bg-black px-2 py-1 text-xs text-white'>
+                  {category}
+                </span>
+              )}
+            </div>
+            <h3 className='mb-2 text-lg font-semibold'>{title}</h3>
+            {subtitle && (
+              <p className='text-sm text-muted-foreground'>{subtitle}</p>
             )}
-            {category && (
-              <span className='rounded bg-black px-2 py-1 text-xs text-white'>
-                {category}
-              </span>
+            {extraInfoTopRight && (
+              <div className='mt-2 text-sm'>{extraInfoTopRight}</div>
             )}
-          </div>
-          <h3 className='mb-2 text-lg font-semibold'>{title}</h3>
-          {subtitle && (
-            <p className='text-sm text-muted-foreground'>{subtitle}</p>
-          )}
-          <div className='mb-2 w-full border-t border-gray-200'></div>
-          {contentLeft}
-          <div className='mt-2 flex justify-between text-sm'>
-            {contentRight}
-          </div>
+            <div className='mb-2 w-full border-t border-gray-200'></div>
+            {contentLeft}
+            <div className='mt-2 flex justify-between text-sm'>
+              {contentRight}
+            </div>
+          </Link>
         </div>
 
         {/* desktop */}

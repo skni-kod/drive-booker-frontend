@@ -72,7 +72,6 @@ export default function LoginForm() {
       console.error('Failed to fetch session:', error);
     }
   };
-
   const handleGoogleSignIn = async () => {
     await axiosInstance.get('/sanctum/csrf-cookie');
     window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/google/redirect`;
@@ -82,10 +81,10 @@ export default function LoginForm() {
     <>
       <form
         onSubmit={handleSubmit(handleFormSubmit)}
-        className='grid w-64 gap-4 md:w-96'
+        className='grid w-72 gap-4 md:w-96'
       >
-        <div className='grid gap-1'>
-          <Label>E-mail</Label>
+        <div className='grid gap-2'>
+          <Label className='font-semibold'>Adres E-mail</Label>
           <Input
             id='email'
             type='text'
@@ -96,11 +95,11 @@ export default function LoginForm() {
             <p className='text-sm text-red-600'>{errors.email.message}</p>
           )}
         </div>
-        <div className='grid gap-1'>
-          <Label>Password</Label>
+        <div className='grid gap-2'>
+          <Label className='font-semibold'>Hasło</Label>
           <Input
             id='password'
-            placeholder='password'
+            placeholder='hasło'
             type='password'
             {...register('password')}
           />
@@ -111,21 +110,16 @@ export default function LoginForm() {
             <div className='flex items-center space-x-2'>
               <Checkbox id='remember' />
               <Label htmlFor='remember' className='text-sm'>
-                Remember
+                Zapamiętaj hasło
               </Label>
             </div>
-            <div className='flex items-center'>
-              <Button asChild variant={'link'} className='pr-2'>
-                <a href={'/forgot'}>Forgot password?</a>
-              </Button>
-            </div>
+            <Button asChild variant={'link'} className='h-auto p-0 text-sm'>
+              <a href={'/forgot'}>Zapomniałem hasła</a>
+            </Button>
           </div>
         </div>
-        <Button
-          className='w-full bg-black text-white hover:bg-gray-800'
-          type='submit'
-        >
-          LOG IN
+        <Button className='w-full' variant={'blue'} type='submit'>
+          ZALOGUJ SIĘ
         </Button>
         {submitError && (
           <p className='text-center text-sm text-red-600'>{submitError}</p>
@@ -134,11 +128,11 @@ export default function LoginForm() {
 
       <div className='my-6 flex w-full items-center justify-center'>
         <div className='w-full border-t border-black'></div>
-        <span className='px-4 text-sm text-gray-500'>OR</span>
+        <span className='px-4 text-sm text-gray-500'>LUB</span>
         <div className='w-full border-t border-black'></div>
       </div>
 
-      <Button className='px-10 py-5' onClick={handleGoogleSignIn}>
+      <Button className='w-full p-5' onClick={handleGoogleSignIn}>
         <span className='flex items-center justify-center space-x-3'>
           <Image
             src={'/assets/icons/googleIcon.svg'}
