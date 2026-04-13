@@ -88,6 +88,10 @@ const SideMenu = () => {
           isOpen ? 'translate-x-0' : '-translate-x-full xl:translate-x-0'
         }`}
       >
+        <div
+          aria-hidden='true'
+          className='pointer-events-none absolute inset-y-0 right-0 hidden w-2 bg-gradient-to-r from-blue-600 to-white xl:block'
+        />
         <div className='flex h-full flex-col items-center justify-between'>
           <div className='w-full'>
             <div className='mt-8 flex justify-center'>
