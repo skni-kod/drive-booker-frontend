@@ -17,5 +17,6 @@ export async function getSession() {
     access_token: session.access_token || null,
     isLoggedIn: session.isLoggedIn || false,
     role: session.role,
+    isCompleted: session.isCompleted,
   };
 }

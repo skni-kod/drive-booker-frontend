@@ -11,6 +11,7 @@ interface FormFieldProps<T extends FieldValues> {
   error?: string;
   disabled?: boolean;
   customInput?: ReactNode;
+  placeholder?: string;
 }
 
 export const FormField = <T extends FieldValues>({
@@ -20,6 +21,7 @@ export const FormField = <T extends FieldValues>({
   register,
   error,
   disabled = false,
+  placeholder,
 }: FormFieldProps<T>) => {
   return (
     <div>
@@ -32,6 +34,7 @@ export const FormField = <T extends FieldValues>({
         className='bg-white text-sm sm:text-base'
         {...register(id)}
         disabled={disabled}
+        placeholder={placeholder}
       />
       {error && <span className='text-red-500'>{error}</span>}
     </div>

@@ -7,6 +7,9 @@ export async function GET() {
   try {
     const authToken = (await cookies()).get('auth_token')?.value;
     const role = (await cookies()).get('roles')?.value;
+    const isCompleted: boolean = JSON.parse(
+      (await cookies()).get('is_completed')?.value ?? 'false',
+    );
 
     if (!authToken) {
       return new Response('No auth token found', { status: 401 });
@@ -24,6 +27,8 @@ export async function GET() {
     session.access_token = authToken;
     session.isLoggedIn = true;
     session.role = role ? JSON.parse(role) : [];
+    session.isCompleted = isCompleted;
+
     await session.save();
 
     return Response.redirect(

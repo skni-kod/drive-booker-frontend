@@ -4,6 +4,7 @@ export interface SessionData {
   access_token: string;
   isLoggedIn: boolean;
   role: string[];
+  isCompleted: boolean;
 }
 
 export const sessionOptions: SessionOptions = {
