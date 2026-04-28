@@ -1,7 +1,15 @@
 'use client';
 
 import { PaginationWithLinks } from '@/components/shared/PaginationWithLinks';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { AdminPanelApiRoutes } from '@/enums/routes';
 import { axiosInstance } from '@/lib/axiosInstance';
 import { fetchCourseRequests } from '@/services/adminpanel/fetchCourseRequests';
@@ -18,7 +26,6 @@ export default function CourseRequests() {
   const { data, isLoading, isError } = useQuery({
     queryKey: ['course-requests', page],
     queryFn: () => fetchCourseRequests(page),
-    staleTime: 60 * 1000,
   });
 
   const requests = data?.data || [];
@@ -43,90 +50,96 @@ export default function CourseRequests() {
     mutation.mutate({ id, action });
   };
 
-  if (isLoading)
-    return <p className='text-center text-gray-500'>Ładowanie danych...</p>;
-  if (isError)
-    return (
-      <p className='text-center text-red-500'>
-        Błąd podczas pobierania danych.
-      </p>
-    );
-
   return (
-    <div className='mt-6 max-w-4xl'>
-      <h2 className='mb-4 text-left text-2xl font-semibold'>
-        Lista zgłoszeń do kursu
-      </h2>
-      <div className='overflow-x-auto'>
-        <table className='min-w-full rounded-lg border border-gray-200 bg-white shadow-md'>
-          <thead>
-            <tr className='bg-gray-100'>
-              <th className='border p-3'>Imię</th>
-              <th className='border p-3'>Nazwisko</th>
-              <th className='border p-3'>Email</th>
-              <th className='border p-3'>Telefon</th>
-              <th className='border p-3'>Status</th>
-              <th className='border p-3'>Akcje</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data?.data.map((request) => (
-              <tr key={request.id} className='hover:bg-gray-50'>
-                <td className='border p-3'>{request.name}</td>
-                <td className='border p-3'>{request.last_name}</td>
-                <td className='border p-3'>{request.email}</td>
-                <td className='border p-3'>{request.phone}</td>
-                <td className='border p-3'>
-                  <span
-                    className={`rounded px-2 py-1 text-xs font-semibold ${
-                      request.status === 'accepted'
-                        ? 'bg-green-200 text-green-800'
-                        : request.status === 'pending'
-                          ? 'bg-orange-200 text-orange-800'
-                          : 'bg-red-200 text-red-800'
-                    }`}
-                  >
-                    {request.status}
-                  </span>
-                </td>
-                <td className='flex justify-center gap-2 border p-3'>
-                  <Button
-                    onClick={() => handleAction(request.id, 'accept')}
-                    disabled={loadingId === request.id}
-                    className={`rounded px-3 py-1 text-sm text-white transition ${
-                      loadingId === request.id
-                        ? 'bg-green-300'
-                        : 'bg-green-500 hover:bg-green-600'
-                    }`}
-                  >
-                    {loadingId === request.id ? '...' : 'Akceptuj'}
-                  </Button>
-                  <Button
-                    onClick={() => handleAction(request.id, 'decline')}
-                    disabled={loadingId === request.id}
-                    className={`rounded px-3 py-1 text-sm text-white transition ${
-                      loadingId === request.id
-                        ? 'bg-red-300'
-                        : 'bg-red-500 hover:bg-red-600'
-                    }`}
-                  >
-                    {loadingId === request.id ? '...' : 'Odrzuć'}
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {requests.length > 0 && meta && (
-          <div className='col-span-2 mt-4 flex justify-center'>
+    <div className='container mx-auto max-w-6xl py-6'>
+      <Card>
+        <CardHeader>
+          <div className='flex items-center justify-between'>
+            <div>
+              <CardTitle className='text-2xl'>Zgłoszenia do kursu</CardTitle>
+              <CardDescription>
+                Przeglądaj i zarządzaj zgłoszeniami uczestników
+              </CardDescription>
+            </div>
+            {isLoading && <Badge variant='secondary'>Ładowanie...</Badge>}
+            {isError && (
+              <Badge variant='destructive'>
+                Błąd podczas pobierania danych
+              </Badge>
+            )}
+          </div>
+        </CardHeader>
+        <CardContent>
+          {data && (
+            <div className='overflow-x-auto'>
+              <table className='min-w-full'>
+                <thead>
+                  <tr className='border-b'>
+                    <th className='p-3 text-left font-medium'>Imię</th>
+                    <th className='p-3 text-left font-medium'>Nazwisko</th>
+                    <th className='p-3 text-left font-medium'>Email</th>
+                    <th className='p-3 text-left font-medium'>Telefon</th>
+                    <th className='p-3 text-left font-medium'>Status</th>
+                    <th className='p-3 text-center font-medium'>Akcje</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data?.data.map((request) => (
+                    <tr key={request.id} className='border-b hover:bg-muted/50'>
+                      <td className='p-3'>{request.name}</td>
+                      <td className='p-3'>{request.last_name}</td>
+                      <td className='p-3'>{request.email}</td>
+                      <td className='p-3'>{request.phone}</td>
+                      <td className='p-3'>
+                        <Badge
+                          variant={
+                            request.status === 'accepted'
+                              ? 'default'
+                              : request.status === 'pending'
+                                ? 'secondary'
+                                : 'destructive'
+                          }
+                        >
+                          {request.status}
+                        </Badge>
+                      </td>
+                      <td className='p-3'>
+                        <div className='flex justify-center gap-2'>
+                          <Button
+                            onClick={() => handleAction(request.id, 'accept')}
+                            disabled={loadingId === request.id}
+                            size='sm'
+                            variant='default'
+                          >
+                            {loadingId === request.id ? '...' : 'Akceptuj'}
+                          </Button>
+                          <Button
+                            onClick={() => handleAction(request.id, 'decline')}
+                            disabled={loadingId === request.id}
+                            size='sm'
+                            variant='destructive'
+                          >
+                            {loadingId === request.id ? '...' : 'Odrzuć'}
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </CardContent>
+        <div className='pb-6'>
+          {requests.length > 0 && meta && (
             <PaginationWithLinks
               page={Number(meta.current_page)}
               totalCount={meta.total}
               pageSize={meta.per_page}
             />
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      </Card>
     </div>
   );
 }

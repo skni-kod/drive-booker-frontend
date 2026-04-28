@@ -36,7 +36,8 @@ export default function PaymentButton({ priceId }: Props) {
     <Button
       onClick={handleSubscribe}
       disabled={loading}
-      className='text-sm font-bold'
+      className='mt-6 w-full font-bold'
+      variant={'white'}
     >
       {loading ? 'Przetwarzanie...' : 'OPŁAĆ KURS'}
     </Button>
