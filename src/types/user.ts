@@ -19,6 +19,7 @@ export interface UserPage {
   zip_code: string;
   street: string;
   house_number: string;
+  is_completed: boolean;
 }
 
 export interface UserCreditCard {

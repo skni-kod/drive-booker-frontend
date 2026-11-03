@@ -11,6 +11,7 @@ interface LoginResponse {
     name: string;
     email: string;
     roles: string[];
+    is_completed: boolean;
   };
   access_token: string;
   message: string;
@@ -36,6 +37,7 @@ export async function POST(request: Request) {
       session.access_token = loginResponse.data.access_token;
       session.isLoggedIn = true;
       session.role = loginResponse.data.user.roles;
+      session.isCompleted = loginResponse.data.user.is_completed;
       await session.save();
 
       return new Response('Success!', { status: 200 });
